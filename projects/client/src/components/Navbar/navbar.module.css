@@ -1,0 +1,28 @@
+.navbar_container {
+	display: flex;
+
+	width: 100%;
+	height: 100px;
+
+	background-image: linear-gradient(to bottom, #cfffff, #ffffff);
+}
+
+.logo_container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 20%;
+
+	button {
+		cursor: pointer;
+		width: 100%;
+		color: #4d47c3;
+		font-size: 42px;
+		font-weight: 550;
+		border: none;
+		overflow: visible;
+		text-wrap: nowrap;
+		padding-left: 20px;
+		background-color: transparent;
+	}
+}
