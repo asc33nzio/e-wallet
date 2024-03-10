@@ -1,8 +1,11 @@
 import React from 'react'
+import Sidebar from '../../components/Sidebar/Sidebar'
 
 const Dashboard = ():React.ReactElement => {
   return (
-    <div>Dashboard</div>
+    <>
+        <Sidebar />
+    </>
   )
 }
 
