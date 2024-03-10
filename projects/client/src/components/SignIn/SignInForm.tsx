@@ -9,6 +9,7 @@ import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
 import { AcceptableToastType } from "../../types/Toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../../redux/tokenSlice";
+import { useNavigate } from "react-router-dom";
 
 interface FormValues {
 	email: string;
@@ -16,7 +17,7 @@ interface FormValues {
 }
 
 interface SignInFormProps {
-	onToastChange: (showToast: boolean, modalMessage: string, modalType: AcceptableToastType) => void;
+	onToastChange: (showToast: boolean, toastMessage: string, toastType: AcceptableToastType) => void;
 }
 
 const SignInSchema = Yup.object().shape({
@@ -34,6 +35,7 @@ const SignInSchema = Yup.object().shape({
 
 const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const userData = useSelector((state: any) => state.user.value);
 
 	const initialValues: FormValues = {
@@ -52,6 +54,10 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 			}
 
 			dispatch(setToken(jwt));
+
+			setTimeout(() => {
+				navigate("/dashboard")
+			}, 1000);
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
 			onToastChange(true, errorMessage !== undefined ? errorMessage : "Login Failed", "error");
@@ -59,7 +65,7 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 
 		setTimeout(() => {
 			onToastChange(false, "", "");
-		}, 3000);
+		}, 5000);
 
 		setSubmitting(false);
 	};
@@ -71,7 +77,7 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 				onToastChange(true, `Welcome ${displayName}`, "ok");
 			}
 		};
-
+		
 		displayWelcomeToast();
 	}, [userData]);
 

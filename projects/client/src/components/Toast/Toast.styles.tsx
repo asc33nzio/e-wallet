@@ -31,7 +31,7 @@ export const StyledToast = styled.div<{ type: string }>`
 	--bg-color-error: #ffddca;
 	--color-error: #f60707;
 
-	width: 25%;
+	width: 30%;
 	height: 50px;
 
 	display: flex;

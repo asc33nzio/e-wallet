@@ -1154,3 +1154,28 @@ e-wallet/controllers.(*UserController).RegisterUser(0xc000472680, 0xc0001d3600)
 [ERROR] 2024/03/11 04:27:03 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
 e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc0001d2200)
 	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c
+[ERROR] 2024/03/11 05:00:28 Error 400: username/email has aready been used	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:51 +0x12b
+e-wallet/controllers.(*UserController).RegisterUser(0xc000472670, 0xc0001d2200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:39 +0x8c
+[ERROR] 2024/03/11 05:03:14 Error: 
+[ERROR] 2024/03/11 05:04:36 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc0001d2500)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c
+[ERROR] 2024/03/11 05:04:40 Error: 
+[ERROR] 2024/03/11 05:04:40 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc0001d2500)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c
+[ERROR] 2024/03/11 05:05:02 Error: 
+[ERROR] 2024/03/11 05:06:01 Error: 
+[ERROR] 2024/03/11 05:06:01 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc0001d2500)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c
+[ERROR] 2024/03/11 05:06:05 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc0001d2800)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c
+[ERROR] 2024/03/11 05:06:49 Error: 
+[ERROR] 2024/03/11 05:06:49 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc0001d2500)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c
+[ERROR] 2024/03/11 05:07:02 Error: 
+[ERROR] 2024/03/11 05:07:02 Error: 

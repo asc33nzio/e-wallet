@@ -3,13 +3,14 @@ import classes from "./login.module.css";
 import Navbar from "../../components/Navbar/Navbar";
 import SignInForm from "../../components/SignIn/SignInForm";
 import guy from "../../assets/person1.png";
-import { useNavigate } from "react-router-dom";
 import Toast from "../../components/Toast/Toast";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../../components/Toast/ToastContext";
 
 const Login = (): React.ReactElement => {
 	const navigate = useNavigate();
+	const { showToast, toastMessage, toastType, setToast } = useToast();
 	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
-	const [toast, setToast] = useState({ showToast: false, toastMessage: "", toastType: "" });
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -31,9 +32,7 @@ const Login = (): React.ReactElement => {
 	return isDesktopDisplay ? (
 		<>
 			<Navbar />
-			{toast.showToast ? (
-				<Toast message={toast.toastMessage} type={toast.toastType} resolution={"desktop"} />
-			) : null}
+			{showToast ? <Toast message={toastMessage} type={toastType} resolution={"desktop"} /> : null}
 			<div className={classes.container}>
 				<div className={classes.descriptionContainer}>
 					<p className={classes.mainHeading}>Sign in to</p>
@@ -48,23 +47,17 @@ const Login = (): React.ReactElement => {
 				</div>
 				<img className={classes.personImg} alt="guy" src={guy} />
 				<SignInForm
-					onToastChange={(showToast, toastMessage, toastType) =>
-						setToast({ showToast, toastMessage, toastType })
-					}
+					onToastChange={(showToast, toastMessage, toastType) => setToast(showToast, toastMessage, toastType)}
 				/>
 			</div>
 		</>
 	) : (
 		<>
 			<Navbar />
-			{toast.showToast ? (
-				<Toast message={toast.toastMessage} type={toast.toastType} resolution={"mobile"} />
-			) : null}
+			{showToast ? <Toast message={toastMessage} type={toastType} resolution={"mobile"} /> : null}
 			<div className={classes.container}>
 				<SignInForm
-					onToastChange={(showToast, toastMessage, toastType) =>
-						setToast({ showToast, toastMessage, toastType })
-					}
+					onToastChange={(showToast, toastMessage, toastType) => setToast(showToast, toastMessage, toastType)}
 				/>
 			</div>
 		</>
