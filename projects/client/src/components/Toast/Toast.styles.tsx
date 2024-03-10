@@ -25,39 +25,14 @@ export const StyledToastContainer = styled.div<{ orientation?: string }>`
 	}
 `;
 
-export const StyledToast = styled.div<{ type: string }>`
+export const StyledToast = styled.div<{ type: string, resolution: string }>`
 	--bg-color-ok: #eafcef;
 	--color-ok: #33a720;
 	--bg-color-error: #ffddca;
 	--color-error: #f60707;
 
-	width: 30%;
-	height: 50px;
-
-	display: flex;
-	flex-direction: center;
-	align-items: center;
-	justify-content: center;
-	z-index: 3;
-
-	background-color: ${(props) => (props.type === "ok" ? "var(--bg-color-ok)" : "var(--bg-color-error)")};
-	color: ${(props) => (props.type === "ok" ? "var(--color-ok)" : "var(--color-error)")};
-	border: ${(props) => (props.type === "ok" ? "2px solid var(--color-ok)" : "2px solid var(--color-error)")};
-	border-radius: 15px;
-
-	text-align: center;
-	font-size: 24px;
-	font-weight: 500;
-`;
-
-export const StyledMobileToast = styled.div<{ type: string }>`
-	--bg-color-ok: #eafcef;
-	--color-ok: #33a720;
-	--bg-color-error: #ffddca;
-	--color-error: #f60707;
-
-	width: 60%;
-	height: 65px;
+	width: ${(props) => (props.resolution === "desktop" ? "30%" : "60%")};
+	height: ${(props) => (props.resolution === "desktop" ? "50px" : "60px")};
 
 	display: flex;
 	flex-direction: center;

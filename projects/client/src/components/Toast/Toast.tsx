@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledMobileToast, StyledToast, StyledToastContainer } from "./Toast.styles";
+import { StyledToast, StyledToastContainer } from "./Toast.styles";
 import { AcceptableResolutionType, AcceptableToastOrientation, AcceptableToastType } from "../../types/Toast";
 
 const Toast = (props: {
@@ -10,11 +10,9 @@ const Toast = (props: {
 }): React.ReactElement => {
 	return (
 		<StyledToastContainer orientation={props.orientation}>
-			{props.resolution === "desktop" ? (
-				<StyledToast type={props.type}>{props.message}</StyledToast>
-			) : (
-				<StyledMobileToast type={props.type}>{props.message}</StyledMobileToast>
-			)}
+			<StyledToast type={props.type} resolution={props.resolution}>
+				{props.message}
+			</StyledToast>
 		</StyledToastContainer>
 	);
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./login.module.css";
 import Navbar from "../../components/Navbar/Navbar";
-import SignInForm from "../../components/SignIn/SignInForm";
+import SignInForm from "../../components/SignInForm/SignInForm";
 import guy from "../../assets/person1.png";
 import Toast from "../../components/Toast/Toast";
 import { useNavigate } from "react-router-dom";
