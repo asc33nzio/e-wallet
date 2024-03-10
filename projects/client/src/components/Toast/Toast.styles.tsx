@@ -1,10 +1,12 @@
 import styled from "styled-components";
 
-export const StyledModalContainer = styled.div<{ message?: string }>`
+export const StyledModalContainer = styled.div<{ orientation?: string }>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: center;
+	justify-content: ${(props) => (props.orientation === "left" ? "flex-start" : props.orientation === "right" ? "flex-end" : "center")};
+	padding-right: ${(props) => (props.orientation === "right" ? "50px" : 0)};
+	padding-left: ${(props) => (props.orientation === "left" ? "50px" : 0)};
 
 	position: absolute;
 	z-index: 2;
@@ -29,7 +31,7 @@ export const StyledModal = styled.div<{ type: string }>`
 	--bg-color-error: #ffddca;
 	--color-error: #f60707;
 
-	width: 20%;
+	width: 25%;
 	height: 50px;
 
 	display: flex;
@@ -55,7 +57,7 @@ export const StyledMobileModal = styled.div<{ type: string }>`
 	--color-error: #f60707;
 
 	width: 60%;
-	height: 50px;
+	height: 65px;
 
 	display: flex;
 	flex-direction: center;

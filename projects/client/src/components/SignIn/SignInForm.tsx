@@ -19,7 +19,7 @@ interface SignInFormProps {
 	onToastChange: (showToast: boolean, modalMessage: string, modalType: AcceptableToastType) => void;
 }
 
-const SignUpSchema = Yup.object().shape({
+const SignInSchema = Yup.object().shape({
 	email: Yup.string()
 		.matches(/^[\w-.]+(\+[\w-]+)?@([\w-]+\.)+[\w-]{2,4}$/, "incorrect e-mail format")
 		.required("e-mail cannot be empty"),
@@ -50,6 +50,7 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 				console.error("JWT not found in the response data");
 				return;
 			}
+
 			dispatch(setToken(jwt));
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
@@ -72,14 +73,14 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 		};
 
 		displayWelcomeToast();
-	}, [userData, onToastChange]);
+	}, [userData]);
 
 	return (
 		<div className={classes.container}>
 			<p className={classes.title}>Sign In</p>
 			<Formik
 				initialValues={initialValues}
-				validationSchema={SignUpSchema}
+				validationSchema={SignInSchema}
 				validateOnChange={true}
 				validateOnBlur={true}
 				onSubmit={(credentials, setSubmitting) => {

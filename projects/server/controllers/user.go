@@ -36,12 +36,21 @@ func (c *UserController) RegisterUser(ctx *gin.Context) {
 		return
 	}
 
-	_, err := c.userService.RegisterUser(user)
+	user, err := c.userService.RegisterUser(user)
 	if err != nil {
 		ctx.Error(err)
 		return
 	}
-	util.ResponseJSON(ctx.Writer, constant.ResCreated201, nil, http.StatusCreated)
+
+	ctx.Set(constant.UserId, user.Id)
+	JWT, err := middleware.GenerateJWT(ctx)
+	if err != nil {
+		err := apperror.InternalServerError()
+		ctx.Error(err)
+		return
+	}
+
+	util.ResponseJSON(ctx.Writer, constant.ResCreated201, JWT, http.StatusCreated)
 }
 
 func (c *UserController) Login(ctx *gin.Context) {

@@ -900,3 +900,147 @@ e-wallet/controllers.(*UserController).Login(0xc000472650, 0xc0001d2900)
 	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
 [ERROR] 2024/03/10 08:33:31 Error: 
 [ERROR] 2024/03/10 08:33:54 Error: 
+[ERROR] 2024/03/10 21:47:50 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0002a6200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 21:47:55 Error: 
+[ERROR] 2024/03/10 21:47:55 Error: 
+[ERROR] 2024/03/10 22:03:44 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d2300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:03:47 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:03:52 Error: 
+[ERROR] 2024/03/10 22:03:53 Error: 
+[ERROR] 2024/03/10 22:04:21 Error: 
+[ERROR] 2024/03/10 22:04:21 Error: 
+[ERROR] 2024/03/10 22:04:25 Error: 
+[ERROR] 2024/03/10 22:04:25 Error: 
+[ERROR] 2024/03/10 22:04:27 Error: 
+[ERROR] 2024/03/10 22:04:28 Error: 
+[ERROR] 2024/03/10 22:04:28 Error: 
+[ERROR] 2024/03/10 22:04:28 Error: 
+[ERROR] 2024/03/10 22:04:28 Error: 
+[ERROR] 2024/03/10 22:04:28 Error: 
+[ERROR] 2024/03/10 22:04:29 Error: 
+[ERROR] 2024/03/10 22:04:29 Error: 
+[ERROR] 2024/03/10 22:04:35 Error: 
+[ERROR] 2024/03/10 22:04:35 Error: 
+[ERROR] 2024/03/10 22:04:35 Error: 
+[ERROR] 2024/03/10 22:04:35 Error: 
+[ERROR] 2024/03/10 22:04:35 Error: 
+[ERROR] 2024/03/10 22:04:52 Error: 
+[ERROR] 2024/03/10 22:04:52 invalid email	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:60 +0x15b
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:04:55 Error: 
+[ERROR] 2024/03/10 22:04:55 invalid email	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:60 +0x15b
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:05:07 Error: 
+[ERROR] 2024/03/10 22:05:07 invalid email	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:60 +0x15b
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:05:08 Error: 
+[ERROR] 2024/03/10 22:05:08 invalid email	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:60 +0x15b
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:05:19 invalid email	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:60 +0x15b
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:05:21 Error: 
+[ERROR] 2024/03/10 22:05:21 invalid email	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:60 +0x15b
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:06:22 Error: 
+[ERROR] 2024/03/10 22:06:22 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:06:24 Error: 
+[ERROR] 2024/03/10 22:06:25 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:06:26 Error: 
+[ERROR] 2024/03/10 22:06:26 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:06:26 Error: 
+[ERROR] 2024/03/10 22:06:26 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:06:57 Error: 
+[ERROR] 2024/03/10 22:06:57 Error: 
+[ERROR] 2024/03/10 22:06:59 Error: 
+[ERROR] 2024/03/10 22:06:59 Error: 
+[ERROR] 2024/03/10 22:07:02 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:07:04 Error: 
+[ERROR] 2024/03/10 22:07:04 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:07:06 Error: 
+[ERROR] 2024/03/10 22:07:07 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:07:08 Error: 
+[ERROR] 2024/03/10 22:07:08 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8300)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:07:18 Error: 
+[ERROR] 2024/03/10 22:07:18 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:07:42 Error: 
+[ERROR] 2024/03/10 22:07:42 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:07:46 Error: 
+[ERROR] 2024/03/10 22:07:46 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc0001d8600)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:08:01 Error: 
+[ERROR] 2024/03/10 22:08:02 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:08:05 Error: 
+[ERROR] 2024/03/10 22:08:05 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:08:15 Error: 
+[ERROR] 2024/03/10 22:08:15 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:08:39 Error: 
+[ERROR] 2024/03/10 22:08:39 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:11:35 Error: 
+[ERROR] 2024/03/10 22:11:35 Error: 
+[ERROR] 2024/03/10 22:11:40 Error: 
+[ERROR] 2024/03/10 22:12:06 Error: 
+[ERROR] 2024/03/10 22:12:26 Error: 
+[ERROR] 2024/03/10 22:12:26 Error: 
+[ERROR] 2024/03/10 22:13:55 Error: 
+[ERROR] 2024/03/10 22:13:56 Error: 
+[ERROR] 2024/03/10 22:14:43 Error: 
+[ERROR] 2024/03/10 22:14:43 Error: 
+[ERROR] 2024/03/10 22:15:51 Error: 
+[ERROR] 2024/03/10 22:15:52 Error: 
+[ERROR] 2024/03/10 22:20:36 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542100)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:20:40 Error: 
+[ERROR] 2024/03/10 22:20:40 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542100)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:24:36 Error: 
+[ERROR] 2024/03/10 22:24:41 Error: 
+[ERROR] 2024/03/10 22:24:41 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000400d60, 0xc000542100)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:57 +0x8c
+[ERROR] 2024/03/10 22:34:22 Error 400: username/email has aready been used	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:51 +0x12b
+e-wallet/controllers.(*UserController).RegisterUser(0xc000400d60, 0xc0001d2100)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:39 +0x88
+[ERROR] 2024/03/10 22:34:26 Error: 

@@ -4,10 +4,12 @@ import Navbar from "../../components/Navbar/Navbar";
 import RegisterForm from "../../components/RegisterForm/RegisterForm";
 import guy from "../../assets/person2.png";
 import { useNavigate } from "react-router-dom";
+import Toast from "../../components/Toast/Toast";
 
 const Register = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
+	const [toast, setToast] = useState({ showToast: false, toastMessage: "", toastType: "" });
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -29,6 +31,9 @@ const Register = (): React.ReactElement => {
 	return isDesktopDisplay ? (
 		<>
 			<Navbar />
+			{toast.showToast ? (
+				<Toast message={toast.toastMessage} type={toast.toastType} orientation="right" resolution={"desktop"} />
+			) : null}
 			<div className={classes.container}>
 				<div className={classes.descriptionContainer}>
 					<p className={classes.mainHeading}>Join Us!</p>
@@ -42,14 +47,25 @@ const Register = (): React.ReactElement => {
 					</div>
 				</div>
 				<img className={classes.personImg} alt="guy" src={guy} />
-				<RegisterForm />
+				<RegisterForm
+					onToastChange={(showToast, toastMessage, toastType) =>
+						setToast({ showToast, toastMessage, toastType })
+					}
+				/>
 			</div>
 		</>
 	) : (
 		<>
 			<Navbar />
+			{toast.showToast ? (
+				<Toast message={toast.toastMessage} type={toast.toastType} orientation="right" resolution={"mobile"} />
+			) : null}
 			<div className={classes.container}>
-				<RegisterForm />
+				<RegisterForm
+					onToastChange={(showToast, toastMessage, toastType) =>
+						setToast({ showToast, toastMessage, toastType })
+					}
+				/>
 			</div>
 		</>
 	);

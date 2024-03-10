@@ -4,13 +4,27 @@ import classes from "./registerForm.module.css";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import Oauth from "../Oauth/Oauth";
+import Axios from "axios";
 import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
+import { AcceptableToastType } from "../../types/Toast";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../redux/tokenSlice";
 
 interface FormValues {
 	fullName: string;
 	email: string;
 	password: string;
 	confirmPassword: string;
+}
+
+interface RegisterPayload {
+	email: string;
+	displayName: string;
+	password: string;
+}
+
+interface RegisterFormProps {
+	onToastChange: (showToast: boolean, modalMessage: string, modalType: AcceptableToastType) => void;
 }
 
 const SignUpSchema = Yup.object().shape({
@@ -33,7 +47,9 @@ const SignUpSchema = Yup.object().shape({
 		.required("please confirm your password"),
 });
 
-const Register = (): React.ReactElement => {
+const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
+	const dispatch = useDispatch();
+
 	const initialValues: FormValues = {
 		fullName: "",
 		email: "",
@@ -41,8 +57,32 @@ const Register = (): React.ReactElement => {
 		confirmPassword: "",
 	};
 
-	const handleSubmit = (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-		console.log(values);
+	const handleSubmit = async (userInput: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
+		try {
+			const registerPayload: RegisterPayload = {
+				email: userInput.email,
+				displayName: userInput.fullName,
+				password: userInput.password,
+			};
+
+			const response = await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/register`, registerPayload);
+
+			const jwt = response?.data?.data;
+			if (!jwt || jwt === undefined) {
+				console.error("JWT not found in the response data");
+				return;
+			}
+			dispatch(setToken(jwt));
+
+			onToastChange(true, `Registered successfully`, "ok");
+		} catch (error: any) {
+			const errorMessage = error?.response?.data?.message;
+			onToastChange(true, errorMessage !== undefined ? errorMessage : "Login Failed", "error");
+		}
+
+		setTimeout(() => {
+			onToastChange(false, "", "");
+		}, 3000);
 		setSubmitting(false);
 	};
 
@@ -54,7 +94,9 @@ const Register = (): React.ReactElement => {
 				validationSchema={SignUpSchema}
 				validateOnChange={true}
 				validateOnBlur={true}
-				onSubmit={handleSubmit}
+				onSubmit={(userInput, setSubmitting) => {
+					handleSubmit(userInput, setSubmitting);
+				}}
 			>
 				{({ errors, isSubmitting }) => (
 					<Form>
