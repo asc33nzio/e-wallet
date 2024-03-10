@@ -7,7 +7,7 @@ export const StyledSidebarContainer = styled.div<{ minimized?: boolean }>`
 	align-items: center;
 
 	width: 20%;
-	width: ${(props) => (props.minimized ? "100px" : "20%")};
+	width: ${(props) => (props.minimized ? "125px" : "20%")};
 	height: 100vh;
 	background-color: #f6f4f5;
 
@@ -22,12 +22,12 @@ export const StyledTitleSubcontainer = styled.div<{ minimized?: boolean }>`
 
 	width: 100%;
 	height: 10%;
+	border-bottom: 2px solid #ede6e7;
 
 	cursor: pointer;
 	color: #4d47c3;
 	font-size: ${(props) => (props.minimized ? "24px" : "42px")};
 	font-weight: 550;
-	border: none;
 	overflow: visible;
 	padding-left: ${(props) => (props.minimized ? "15px" : "35px")};
 

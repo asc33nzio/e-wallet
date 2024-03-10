@@ -1,12 +1,18 @@
-import React from 'react'
-import Sidebar from '../../components/Sidebar/Sidebar'
+import React from "react";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import DashboardNavbar from "../../components/Dashboard/Navbar/DashboardNavbar";
+import { StyledDashboardContainer, StyledDashboardMainContainer } from "./dashboard.styles";
 
-const Dashboard = ():React.ReactElement => {
-  return (
-    <>
-        <Sidebar />
-    </>
-  )
-}
+const Dashboard = (): React.ReactElement => {
+	return (
+		<StyledDashboardMainContainer>
+			<Sidebar />
 
-export default Dashboard
+			<StyledDashboardContainer>
+				<DashboardNavbar />
+			</StyledDashboardContainer>
+		</StyledDashboardMainContainer>
+	);
+};
+
+export default Dashboard;
