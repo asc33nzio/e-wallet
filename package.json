@@ -4,6 +4,7 @@
     "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "start:client": "cd projects/client && npm start",
     "start:server": "cd projects/server && go run .",
+    "linter": "cd projects/client && npm run pre-commit",
     "build": "lerna run build --stream",
     "serve": "lerna run serve --stream",
     "clean": "lerna clean --y",
