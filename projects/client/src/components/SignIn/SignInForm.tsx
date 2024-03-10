@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./signInForm.module.css";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
@@ -7,7 +7,8 @@ import Oauth from "../Oauth/Oauth";
 import Axios from "axios";
 import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
 import { AcceptableToastType } from "../../types/Toast";
-import { decodeJWT } from "../../utils/jwt";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "../../redux/tokenSlice";
 
 interface FormValues {
 	email: string;
@@ -32,24 +33,12 @@ const SignUpSchema = Yup.object().shape({
 });
 
 const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
+	const dispatch = useDispatch();
+	const userData = useSelector((state: any) => state.user.value);
+
 	const initialValues: FormValues = {
 		email: "",
 		password: "",
-	};
-
-	const getUserInfo = async (uid: string | undefined, jwt: string) => {
-		try {
-			const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/${uid}`, {
-				headers: {
-					Authorization: `Bearer ${jwt}`,
-				},
-			});
-
-			const userData = response?.data?.data;
-			return userData;
-		} catch (error: any) {
-			console.error(error?.response);
-		}
 	};
 
 	const handleSubmit = async (credentials: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
@@ -57,20 +46,14 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 			const response = await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, credentials);
 
 			const jwt = response?.data?.data;
-			if (!jwt) {
+			if (!jwt || jwt === undefined) {
 				console.error("JWT not found in the response data");
 				return;
 			}
-
-			const payload = decodeJWT(jwt);
-			const uid = payload?.uid;
-			const userData = await getUserInfo(uid, jwt);
-			const displayName = userData?.displayName;
-
-			onToastChange(true, `Welcome ${displayName}`, "ok");
+			dispatch(setToken(jwt));
 		} catch (error: any) {
-			console.log(error?.response?.data?.message);
-			onToastChange(true, "Login Failed", "error");
+			const errorMessage = error?.response?.data?.message;
+			onToastChange(true, errorMessage !== undefined ? errorMessage : "Login Failed", "error");
 		}
 
 		setTimeout(() => {
@@ -79,6 +62,17 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 
 		setSubmitting(false);
 	};
+
+	useEffect(() => {
+		const displayWelcomeToast = async () => {
+			const displayName = await userData?.displayName;
+			if (displayName) {
+				onToastChange(true, `Welcome ${displayName}`, "ok");
+			}
+		};
+
+		displayWelcomeToast();
+	}, [userData, onToastChange]);
 
 	return (
 		<div className={classes.container}>
