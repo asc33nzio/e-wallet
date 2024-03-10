@@ -9,6 +9,7 @@ import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
 import { AcceptableToastType } from "../../types/Toast";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../redux/tokenSlice";
+import { useNavigate } from "react-router-dom";
 
 interface FormValues {
 	fullName: string;
@@ -24,7 +25,7 @@ interface RegisterPayload {
 }
 
 interface RegisterFormProps {
-	onToastChange: (showToast: boolean, modalMessage: string, modalType: AcceptableToastType) => void;
+	onToastChange: (showToast: boolean, toastMessage: string, toastType: AcceptableToastType) => void;
 }
 
 const SignUpSchema = Yup.object().shape({
@@ -48,6 +49,7 @@ const SignUpSchema = Yup.object().shape({
 });
 
 const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
 	const initialValues: FormValues = {
@@ -74,7 +76,8 @@ const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
 			}
 			dispatch(setToken(jwt));
 
-			onToastChange(true, `Registered successfully`, "ok");
+			onToastChange(true, "Registered successfully", "ok");
+			navigate("/dashboard");
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
 			onToastChange(true, errorMessage !== undefined ? errorMessage : "Login Failed", "error");
@@ -82,7 +85,8 @@ const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
 
 		setTimeout(() => {
 			onToastChange(false, "", "");
-		}, 3000);
+		}, 5000);
+
 		setSubmitting(false);
 	};
 

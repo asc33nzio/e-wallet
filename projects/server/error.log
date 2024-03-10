@@ -1151,3 +1151,6 @@ e-wallet/controllers.(*UserController).RegisterUser(0xc000472680, 0xc0001d3600)
 [ERROR] 2024/03/10 23:15:32 Error: 
 [ERROR] 2024/03/10 23:15:44 Error: 
 [ERROR] 2024/03/10 23:15:44 Error: 
+[ERROR] 2024/03/11 04:27:03 Error 401: incorrect login credentials	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc0001d2200)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c

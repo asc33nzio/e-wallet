@@ -3,13 +3,14 @@ import classes from "./register.module.css";
 import Navbar from "../../components/Navbar/Navbar";
 import RegisterForm from "../../components/RegisterForm/RegisterForm";
 import guy from "../../assets/person2.png";
-import { useNavigate } from "react-router-dom";
 import Toast from "../../components/Toast/Toast";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../../components/Toast/ToastContext";
 
 const Register = (): React.ReactElement => {
 	const navigate = useNavigate();
+	const { showToast, toastMessage, toastType, setToast } = useToast();
 	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
-	const [toast, setToast] = useState({ showToast: false, toastMessage: "", toastType: "" });
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -31,8 +32,8 @@ const Register = (): React.ReactElement => {
 	return isDesktopDisplay ? (
 		<>
 			<Navbar />
-			{toast.showToast ? (
-				<Toast message={toast.toastMessage} type={toast.toastType} orientation="right" resolution={"desktop"} />
+			{showToast ? (
+				<Toast message={toastMessage} type={toastType} resolution="desktop" />
 			) : null}
 			<div className={classes.container}>
 				<div className={classes.descriptionContainer}>
@@ -48,23 +49,19 @@ const Register = (): React.ReactElement => {
 				</div>
 				<img className={classes.personImg} alt="guy" src={guy} />
 				<RegisterForm
-					onToastChange={(showToast, toastMessage, toastType) =>
-						setToast({ showToast, toastMessage, toastType })
-					}
+					onToastChange={(showToast, toastMessage, toastType) => setToast(showToast, toastMessage, toastType)}
 				/>
 			</div>
 		</>
 	) : (
 		<>
 			<Navbar />
-			{toast.showToast ? (
-				<Toast message={toast.toastMessage} type={toast.toastType} orientation="right" resolution={"mobile"} />
+			{showToast ? (
+				<Toast message={toastMessage} type={toastType} orientation="right" resolution={"mobile"} />
 			) : null}
 			<div className={classes.container}>
 				<RegisterForm
-					onToastChange={(showToast, toastMessage, toastType) =>
-						setToast({ showToast, toastMessage, toastType })
-					}
+					onToastChange={(showToast, toastMessage, toastType) => setToast(showToast, toastMessage, toastType)}
 				/>
 			</div>
 		</>

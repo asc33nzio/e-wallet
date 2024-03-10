@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledMobileModal, StyledModal, StyledModalContainer } from "./Toast.styles";
+import { StyledMobileToast, StyledToast, StyledToastContainer } from "./Toast.styles";
 import { AcceptableResolutionType, AcceptableToastOrientation, AcceptableToastType } from "../../types/Toast";
 
 const Toast = (props: {
@@ -9,13 +9,13 @@ const Toast = (props: {
 	orientation?: AcceptableToastOrientation;
 }): React.ReactElement => {
 	return (
-		<StyledModalContainer orientation={props.orientation}>
+		<StyledToastContainer orientation={props.orientation}>
 			{props.resolution === "desktop" ? (
-				<StyledModal type={props.type}>{props.message}</StyledModal>
+				<StyledToast type={props.type}>{props.message}</StyledToast>
 			) : (
-				<StyledMobileModal type={props.type}>{props.message}</StyledMobileModal>
+				<StyledMobileToast type={props.type}>{props.message}</StyledMobileToast>
 			)}
-		</StyledModalContainer>
+		</StyledToastContainer>
 	);
 };
 

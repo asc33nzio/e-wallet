@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledModalContainer = styled.div<{ orientation?: string }>`
+export const StyledToastContainer = styled.div<{ orientation?: string }>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -12,7 +12,7 @@ export const StyledModalContainer = styled.div<{ orientation?: string }>`
 	z-index: 2;
 
 	width: 100%;
-	height: 100px;
+	height: ${(props) => (props.orientation === "right" ? "300px" : "100px")};
 
 	animation: dropAnimation 1.5s ease;
 	@keyframes dropAnimation {
@@ -25,7 +25,7 @@ export const StyledModalContainer = styled.div<{ orientation?: string }>`
 	}
 `;
 
-export const StyledModal = styled.div<{ type: string }>`
+export const StyledToast = styled.div<{ type: string }>`
 	--bg-color-ok: #eafcef;
 	--color-ok: #33a720;
 	--bg-color-error: #ffddca;
@@ -50,7 +50,7 @@ export const StyledModal = styled.div<{ type: string }>`
 	font-weight: 500;
 `;
 
-export const StyledMobileModal = styled.div<{ type: string }>`
+export const StyledMobileToast = styled.div<{ type: string }>`
 	--bg-color-ok: #eafcef;
 	--color-ok: #33a720;
 	--bg-color-error: #ffddca;
