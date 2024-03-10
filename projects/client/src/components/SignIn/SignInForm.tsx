@@ -7,6 +7,7 @@ import Oauth from "../Oauth/Oauth";
 import Axios from "axios";
 import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
 import { AcceptableToastType } from "../../types/Toast";
+import { decodeJWT } from "../../utils/jwt";
 
 interface FormValues {
 	email: string;
@@ -36,16 +37,41 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 		password: "",
 	};
 
-	const handleSubmit = async (credentials: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
-		await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, credentials)
-			.then((response) => {
-				console.log(response?.data);
-				onToastChange(true, "Successfully Logged In", "ok");
-			})
-			.catch((error) => {
-				console.log(error?.response?.data?.message);
-				onToastChange(true, "Login Failed", "error");
+	const getUserInfo = async (uid: string | undefined, jwt: string) => {
+		try {
+			const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/${uid}`, {
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
 			});
+
+			const userData = response?.data?.data;
+			return userData;
+		} catch (error: any) {
+			console.error(error?.response);
+		}
+	};
+
+	const handleSubmit = async (credentials: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
+		try {
+			const response = await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/login`, credentials);
+
+			const jwt = response?.data?.data;
+			if (!jwt) {
+				console.error("JWT not found in the response data");
+				return;
+			}
+
+			const payload = decodeJWT(jwt);
+			const uid = payload?.uid;
+			const userData = await getUserInfo(uid, jwt);
+			const displayName = userData?.displayName;
+
+			onToastChange(true, `Welcome ${displayName}`, "ok");
+		} catch (error: any) {
+			console.log(error?.response?.data?.message);
+			onToastChange(true, "Login Failed", "error");
+		}
 
 		setTimeout(() => {
 			onToastChange(false, "", "");

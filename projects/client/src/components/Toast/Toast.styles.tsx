@@ -12,9 +12,15 @@ export const StyledModalContainer = styled.div<{ message?: string }>`
 	width: 100%;
 	height: 100px;
 
-	//!
-	transform: translateY(${(props) => (props.message === "" ? "0" : "-100%")});
-	transition: transform 0.5s ease-in-out;
+	animation: dropAnimation 1.5s ease;
+	@keyframes dropAnimation {
+		0% {
+			transform: translateY(-300px);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
 `;
 
 export const StyledModal = styled.div<{ type: string }>`
@@ -40,8 +46,6 @@ export const StyledModal = styled.div<{ type: string }>`
 	text-align: center;
 	font-size: 24px;
 	font-weight: 500;
-
-	transition: all 3s ease-in;
 `;
 
 export const StyledMobileModal = styled.div<{ type: string }>`
@@ -50,7 +54,7 @@ export const StyledMobileModal = styled.div<{ type: string }>`
 	--bg-color-error: #ffddca;
 	--color-error: #f60707;
 
-	width: 40%;
+	width: 60%;
 	height: 50px;
 
 	display: flex;
