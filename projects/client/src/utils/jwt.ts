@@ -7,10 +7,14 @@ type JwtPayload = {
 	uid?: string;
 };
 
-export const decodeJWT = (token: string): JwtPayload | null => {
+export const decodeJWT = (token: string | null): JwtPayload | null => {
 	try {
-		const payload = jwtDecode(token);
-		return payload;
+		if (token) {
+			const payload = jwtDecode(token);
+			return payload;
+		}
+
+		return null;
 	} catch (error: any) {
 		console.error("Error decoding JWT:", error.message);
 		return null;

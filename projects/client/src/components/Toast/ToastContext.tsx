@@ -30,7 +30,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 export const useToast = (): ToastContextProps => {
 	const context = useContext(ToastContext);
 	if (!context) {
-		throw new Error("useToast must be used within a ToastProvider");
+		throw new Error("Toast context missing!");
 	}
 
 	return context;

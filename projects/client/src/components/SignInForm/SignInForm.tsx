@@ -36,7 +36,7 @@ const SignInSchema = Yup.object().shape({
 const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const userData = useSelector((state: any) => state.user.value);
+	const userData = useSelector((state: any) => state?.user?.value);
 
 	const initialValues: FormValues = {
 		email: "",
@@ -54,6 +54,7 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 			}
 
 			dispatch(setToken(jwt));
+			localStorage.setItem("token", jwt)
 
 			setTimeout(() => {
 				navigate("/dashboard")

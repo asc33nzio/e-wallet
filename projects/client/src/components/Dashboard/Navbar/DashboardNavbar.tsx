@@ -22,6 +22,7 @@ const DashboardNavbar = (): React.ReactElement => {
 	const handleLogout = () => {
 		dispatch(setUserData({}));
 		dispatch(setToken(""));
+		localStorage.clear();
 		navigate("/");
 	};
 

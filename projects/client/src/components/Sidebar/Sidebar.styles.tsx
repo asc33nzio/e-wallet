@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export const StyledSidebarContainer = styled.div<{ minimized?: boolean }>`
+export const StyledSidebarContainer = styled.div<{ minimized?: string }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 
 	width: 20%;
-	width: ${(props) => (props.minimized ? "125px" : "20%")};
+	width: ${({ minimized }) => (minimized === "true" ? "125px" : "20%")};
 	height: 100vh;
 	background-color: #f6f4f5;
 
 	transition: all 3s ease;
 `;
 
-export const StyledTitleSubcontainer = styled.div<{ minimized?: boolean }>`
+export const StyledTitleSubcontainer = styled.div<{ minimized?: string }>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -26,10 +26,10 @@ export const StyledTitleSubcontainer = styled.div<{ minimized?: boolean }>`
 
 	cursor: pointer;
 	color: #4d47c3;
-	font-size: ${(props) => (props.minimized ? "24px" : "42px")};
+	font-size: ${({ minimized }) => (minimized === "true" ? "24px" : "36px")};
 	font-weight: 550;
 	overflow: visible;
-	padding-left: ${(props) => (props.minimized ? "15px" : "35px")};
+	padding-left: ${({ minimized }) => (minimized === "true" ? "15px" : "35px")};
 
 	transition: all 3s ease;
 `;
@@ -56,11 +56,11 @@ export const StyledElements = styled.div`
 	gap: 25px;
 
 	color: #95999e;
-	font-size: 28px;
+	font-size: 24px;
 	font-weight: 400;
 `;
 
-export const StyledLink = styled(Link)<{ minimized?: boolean }>`
+export const StyledLink = styled(Link)<{ minimized?: string }>`
 	cursor: pointer;
 	display: flex;
 	flex-direction: row;
@@ -81,7 +81,7 @@ export const StyledLink = styled(Link)<{ minimized?: boolean }>`
 			width: 0;
 			overflow: hidden;
 			white-space: nowrap;
-			border-right: ${(props) => (props.minimized ? "none" : "2px solid #4d47c3")};
+			border-right: ${({ minimized }) => (minimized === "true" ? "none" : "2px solid #4d47c3")};
 		}
 		100% {
 			width: 100%;
@@ -89,7 +89,7 @@ export const StyledLink = styled(Link)<{ minimized?: boolean }>`
 	}
 `;
 
-export const StyledButton = styled.button<{ minimized?: boolean }>`
+export const StyledButton = styled.button<{ minimized?: string }>`
 	cursor: pointer;
 	display: flex;
 	flex-direction: row;
@@ -102,7 +102,7 @@ export const StyledButton = styled.button<{ minimized?: boolean }>`
 	background-color: transparent;
 
 	border: none;
-	font-size: 28px;
+	font-size: 24px;
 	font-weight: 550;
 	text-align: left;
 
@@ -116,7 +116,7 @@ export const StyledButton = styled.button<{ minimized?: boolean }>`
 			width: 0;
 			overflow: hidden;
 			white-space: nowrap;
-			border-right: ${(props) => (props.minimized ? "none" : "2px solid #4d47c3")};
+			border-right: ${({ minimized }) => (minimized === "true" ? "none" : "2px solid #4d47c3")};
 		}
 		100% {
 			width: 100%;
@@ -124,11 +124,11 @@ export const StyledButton = styled.button<{ minimized?: boolean }>`
 	}
 `;
 
-export const StyledParagraph = styled.p<{ minimized?: boolean }>`
+export const StyledParagraph = styled.p<{ minimized?: string }>`
 	color: #95999e;
 	white-space: nowrap;
 	font-weight: 550;
-	transform: translateX(${(props) => (props.minimized ? "-60%" : "0")});
+	transform: translateX(${({ minimized }) => (minimized === "true" ? "-60%" : "0")});
 	transition: transform 3s ease;
 
 	&:hover {

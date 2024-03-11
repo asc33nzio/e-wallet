@@ -62,8 +62,8 @@ const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
 	const handleSubmit = async (userInput: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
 		try {
 			const registerPayload: RegisterPayload = {
-				email: userInput.email,
-				displayName: userInput.fullName,
+				email: userInput.email?.trim(),
+				displayName: userInput.fullName?.trim(),
 				password: userInput.password,
 			};
 
@@ -75,6 +75,7 @@ const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
 				return;
 			}
 			dispatch(setToken(jwt));
+			localStorage.setItem("token", jwt)
 
 			onToastChange(true, "Registered successfully", "ok");
 			navigate("/dashboard");

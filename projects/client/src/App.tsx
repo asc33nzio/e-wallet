@@ -6,7 +6,9 @@ import { decodeJWT } from "./utils/jwt";
 
 const App = (): null => {
 	const dispatch = useDispatch();
-	const userAuthToken = useSelector((state: any) => state?.token?.value);    
+	//! Logic to be changed later (rehydrate store)
+	const reduxUserAuthToken = useSelector((state: any) => state?.token?.value);   
+	const userAuthToken = localStorage.getItem("token"); 
 
 	const keepLogin = async () => {
 		try {
@@ -27,10 +29,10 @@ const App = (): null => {
 	};
 
 	useEffect(() => {
-		if (userAuthToken && userAuthToken !== undefined) {
+		// if (userAuthToken && userAuthToken !== undefined) {
 			keepLogin();
-		}
-	}, [dispatch, userAuthToken]);
+		// }
+	}, [dispatch, userAuthToken, reduxUserAuthToken]);
 
 	return null;
 };

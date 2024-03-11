@@ -24,6 +24,7 @@ const Sidebar = (): React.ReactElement => {
 	const handleLogout = () => {
 		dispatch(setUserData({}));
 		dispatch(setToken(""));
+		localStorage.clear();
 		navigate("/");
 	};
 
@@ -33,42 +34,48 @@ const Sidebar = (): React.ReactElement => {
 
 	return (
 		<>
-			<StyledSidebarContainer minimized={minimized}>
-				<StyledTitleSubcontainer minimized={minimized}>Sea Wallet</StyledTitleSubcontainer>
+			<StyledSidebarContainer minimized={minimized.toString()}>
+				<StyledTitleSubcontainer minimized={minimized.toString()}>Sea Wallet</StyledTitleSubcontainer>
 
 				<StyledElementsSubcontainer>
 					<StyledElements>
-						<StyledLink to="/" minimized={minimized}>
+						<StyledLink to="/" minimized={minimized.toString()}>
 							<DashboardICO />
-							<StyledParagraph minimized={minimized}>{!minimized && "Dashboard"}</StyledParagraph>
+							<StyledParagraph minimized={minimized.toString()}>
+								{!minimized && "Dashboard"}
+							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/" minimized={minimized}>
+						<StyledLink to="/" minimized={minimized.toString()}>
 							<TransactionICO />
-							<StyledParagraph minimized={minimized}>{!minimized && "Transactions"}</StyledParagraph>
+							<StyledParagraph minimized={minimized.toString()}>
+								{!minimized && "Transactions"}
+							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/" minimized={minimized}>
+						<StyledLink to="/" minimized={minimized.toString()}>
 							<TransferICO />
-							<StyledParagraph minimized={minimized}>{!minimized && "Transfer"}</StyledParagraph>
+							<StyledParagraph minimized={minimized.toString()}>
+								{!minimized && "Transfer"}
+							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/" minimized={minimized}>
+						<StyledLink to="/" minimized={minimized.toString()}>
 							<TopUpICO />
-							<StyledParagraph minimized={minimized}>{!minimized && "Top Up"}</StyledParagraph>
+							<StyledParagraph minimized={minimized.toString()}>{!minimized && "Top Up"}</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledButton onClick={handleLogout} minimized={minimized}>
+						<StyledButton onClick={handleLogout} minimized={minimized.toString()}>
 							<LogoutICO />
-							<StyledParagraph minimized={minimized}>{!minimized && "Logout"}</StyledParagraph>
+							<StyledParagraph minimized={minimized.toString()}>{!minimized && "Logout"}</StyledParagraph>
 						</StyledButton>
 					</StyledElements>
 				</StyledElementsSubcontainer>
