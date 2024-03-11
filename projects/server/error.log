@@ -1268,3 +1268,12 @@ e-wallet/controllers.(*UserController).Login(0xc000472680, 0xc0001d2300)
 [ERROR] 2024/03/11 20:26:36 Error: 
 [ERROR] 2024/03/11 20:26:36 Error: 
 [ERROR] 2024/03/11 20:27:33 Error: 
+[ERROR] 2024/03/11 22:24:02 Error 404: user does not exist	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/services/user.go:70 +0xe5
+e-wallet/controllers.(*UserController).Login(0xc000472670, 0xc000574400)
+	D:/all-repos/labs-bootcamp/lerna-e-wallet/projects/server/controllers/user.go:66 +0x8c
+[ERROR] 2024/03/11 22:24:32 Error: 
+[ERROR] 2024/03/11 22:25:29 Error: 
+[ERROR] 2024/03/11 22:25:29 Error: 
+[ERROR] 2024/03/11 22:25:29 Error: 
+[ERROR] 2024/03/11 22:25:55 Error: 
+[ERROR] 2024/03/11 22:26:40 Error: 

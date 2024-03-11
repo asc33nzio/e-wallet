@@ -5,6 +5,7 @@ import DashboardNavbar from "../../components/Dashboard/Navbar/DashboardNavbar";
 import Toast from "../../components/Toast/Toast";
 import OverviewCard from "../../components/Dashboard/OverviewCard/OverviewCard";
 import TransactionCard from "../../components/Dashboard/TransactionCard/TransactionCard";
+import EmptyTransactionCard from "../../components/Dashboard/EmptyTransactionCard/EmptyTransactionCard";
 import {
 	StyledDashboardNavbarContainer,
 	StyledDashboardMainContainer,
@@ -28,12 +29,26 @@ const Dashboard = (): React.ReactElement => {
 	const [threeRecentTransactions, setThreeRecentTransactions] = useState<Transaction[]>([]);
 	const [totalIncome, setTotalIncome] = useState<number>(0);
 	const [totalExpense, setTotalExpense] = useState<number>(0);
+	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setIsDesktopDisplay(window.outerWidth > 768);
+		};
+
+		handleResize();
+
+		window.addEventListener("resize", handleResize);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
 	const fetchTransactions = async () => {
 		const lastWeekDate = new Date();
 		const currentDate = new Date();
 		lastWeekDate.setDate(currentDate.getDate() - 7);
-		currentDate.setDate(currentDate.getDate() + 1);
+		currentDate.setDate(currentDate.getDate() + 2);
 
 		const formattedCurrentDate = currentDate.toISOString().split("T")[0];
 		const formattedLastWeekDate = lastWeekDate.toISOString().split("T")[0];
@@ -89,12 +104,14 @@ const Dashboard = (): React.ReactElement => {
 	}, [userData, userAuthToken]);
 
 	useEffect(() => {
-		calculateWeeklyIncome();
-		calculateWeeklyExpense();
-		findLastThreeRecentTransactions();
+		if (transactions !== undefined && transactions !== null && transactions?.length > 0) {
+			calculateWeeklyIncome();
+			calculateWeeklyExpense();
+			findLastThreeRecentTransactions();
+		}
 	}, [transactions]);
 
-	return (
+	return isDesktopDisplay ? (
 		<StyledDashboardMainContainer>
 			{showToast ? (
 				<Toast message={toastMessage} type={toastType} orientation="right" resolution="desktop" />
@@ -118,9 +135,73 @@ const Dashboard = (): React.ReactElement => {
 					<StyledDashboardTransactionsContainer>
 						<h1>Recent Transactions</h1>
 						<h2>This Week</h2>
-						<TransactionCard type="credit" transaction={threeRecentTransactions[0]} />
-						<TransactionCard type="debit" transaction={threeRecentTransactions[1]} />
-						<TransactionCard type="credit" transaction={threeRecentTransactions[2]} />
+						{threeRecentTransactions[0] && (
+							<TransactionCard
+								type={threeRecentTransactions[0]?.recipientId === userData?.id ? "credit" : "debit"}
+								transaction={threeRecentTransactions[0]}
+							/>
+						)}
+						{threeRecentTransactions[1] && (
+							<TransactionCard
+								type={threeRecentTransactions[1]?.recipientId === userData?.id ? "credit" : "debit"}
+								transaction={threeRecentTransactions[1]}
+							/>
+						)}
+						{threeRecentTransactions[2] && (
+							<TransactionCard
+								type={threeRecentTransactions[2]?.recipientId === userData?.id ? "credit" : "debit"}
+								transaction={threeRecentTransactions[2]}
+							/>
+						)}
+						{transactions === null && <EmptyTransactionCard />}
+					</StyledDashboardTransactionsContainer>
+				</StyledDashboardContentSubcontainer>
+			</StyledDashboardContentContainer>
+		</StyledDashboardMainContainer>
+	) : (
+		<StyledDashboardMainContainer>
+			{showToast ? <Toast message={toastMessage} type={toastType} resolution="mobile" /> : null}
+			<Sidebar />
+
+			<StyledDashboardContentContainer resolution="mobile">
+				<StyledDashboardNavbarContainer resolution="mobile">
+					<DashboardNavbar resolution="mobile"/>
+				</StyledDashboardNavbarContainer>
+
+				<StyledDashboardContentSubcontainer>
+					<StyledDashboardUsernameContainer resolution="mobile">Hello, {userData.displayName}!</StyledDashboardUsernameContainer>
+
+					<StyledDashboardOverviewContainer resolution="mobile">
+						<OverviewCard resolution="mobile" type="overview" userData={userData} />
+						<OverviewCard resolution="mobile" type="credit" userData={userData} income={totalIncome} />
+						<OverviewCard resolution="mobile" type="debit" userData={userData} expense={totalExpense} />
+					</StyledDashboardOverviewContainer>
+
+					<StyledDashboardTransactionsContainer resolution="mobile">
+						<h1>Recent Transactions</h1>
+						<h2>This Week</h2>
+						{threeRecentTransactions[0] && (
+							<TransactionCard
+								type={threeRecentTransactions[0]?.recipientId === userData?.id ? "credit" : "debit"}
+								transaction={threeRecentTransactions[0]}
+								resolution="mobile"
+							/>
+						)}
+						{threeRecentTransactions[1] && (
+							<TransactionCard
+								type={threeRecentTransactions[1]?.recipientId === userData?.id ? "credit" : "debit"}
+								transaction={threeRecentTransactions[1]}
+								resolution="mobile"
+							/>
+						)}
+						{threeRecentTransactions[2] && (
+							<TransactionCard
+								type={threeRecentTransactions[2]?.recipientId === userData?.id ? "credit" : "debit"}
+								transaction={threeRecentTransactions[2]}
+								resolution="mobile"
+							/>
+						)}
+						{transactions === null && <EmptyTransactionCard />}
 					</StyledDashboardTransactionsContainer>
 				</StyledDashboardContentSubcontainer>
 			</StyledDashboardContentContainer>

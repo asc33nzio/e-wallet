@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DefaultAvatar from "../../../assets/default_ava.png";
 import {
 	StyledAvatar,
 	StyledDashboardHeading,
@@ -6,15 +7,13 @@ import {
 	StyledProfileMenu,
 	StyledProfileMenuElement,
 } from "./dashboardNavbar.styles";
-import DefaultAvatar from "../../../assets/default_ava.png";
-import ProfileICO from "../../../assets/profile/profile.svg";
-import LogoutICO from "../../../assets/profile/logout.svg";
+import { ProfileICO, LogoutICO } from "./DashboardNavbarIcons";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserData } from "../../../redux/userSlice";
 import { setToken } from "../../../redux/tokenSlice";
 
-const DashboardNavbar = (): React.ReactElement => {
+const DashboardNavbar = (props: { resolution?: string }): React.ReactElement => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [expandMenu, setExpandMenu] = useState<boolean>(false);
@@ -32,17 +31,17 @@ const DashboardNavbar = (): React.ReactElement => {
 
 	return (
 		<StyledDashboardNavbarContainer>
-			<StyledDashboardHeading>Dashboard</StyledDashboardHeading>
-			<StyledAvatar src={DefaultAvatar} onClick={handleProfileMenu}></StyledAvatar>
+			<StyledDashboardHeading resolution={props?.resolution}>Dashboard</StyledDashboardHeading>
+			<StyledAvatar resolution={props?.resolution} src={DefaultAvatar} onClick={handleProfileMenu}></StyledAvatar>
 
 			{expandMenu && (
-				<StyledProfileMenu>
+				<StyledProfileMenu resolution={props?.resolution}>
 					<StyledProfileMenuElement>
-						<img src={ProfileICO} alt="profile" />
+						<ProfileICO />
 						<button>Profile</button>
 					</StyledProfileMenuElement>
 					<StyledProfileMenuElement>
-						<img src={LogoutICO} alt="logout" />
+						<LogoutICO />
 						<button onClick={handleLogout}>Logout</button>
 					</StyledProfileMenuElement>
 				</StyledProfileMenu>

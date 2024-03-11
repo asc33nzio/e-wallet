@@ -8,22 +8,22 @@ export const StyledDashboardMainContainer = styled.div`
 	height: 100vh;
 `;
 
-export const StyledDashboardContentContainer = styled.div`
+export const StyledDashboardContentContainer = styled.div<{ resolution?: string }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 
 	width: 100%;
-	height: 100%;
+	height: ${({ resolution }) => (resolution === "mobile" ? "150%" : "100%")};
 `;
 
-export const StyledDashboardNavbarContainer = styled.div`
+export const StyledDashboardNavbarContainer = styled.div<{ resolution?: string }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 
 	width: 100%;
-	height: 10%;
+	height: ${({ resolution }) => (resolution === "mobile" ? "5%" : "10%")};
 `;
 
 export const StyledDashboardContentSubcontainer = styled.div`
@@ -35,54 +35,57 @@ export const StyledDashboardContentSubcontainer = styled.div`
 	height: 90%;
 `;
 
-export const StyledDashboardUsernameContainer = styled.div`
+export const StyledDashboardUsernameContainer = styled.div<{ resolution?: string }>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	white-space: nowrap;
 
 	width: 100%;
-	height: 10%;
+	height: ${({ resolution }) => (resolution === "mobile" ? "5%" : "10%")};
 
-	font-size: 32px;
+	font-size: ${({ resolution }) => (resolution === "mobile" ? "24px" : "32px")};
 	font-weight: 550;
 	color: #282828;
-	padding-left: 50px;
+	padding-left: ${({ resolution }) => (resolution === "mobile" ? "10px" : "50px")};
 `;
 
-export const StyledDashboardOverviewContainer = styled.div`
+export const StyledDashboardOverviewContainer = styled.div<{ resolution?: string }>`
 	display: flex;
-	flex-direction: row;
+	flex-direction: ${({ resolution }) => (resolution === "mobile" ? "column" : "row")};
 	align-items: center;
 
-    padding-left: 50px;
-    gap: 20px;
-    margin-bottom: 32px;
+	padding-top: ${({ resolution }) => (resolution === "mobile" ? "25px" : "0")};
+	padding-left: ${({ resolution }) => (resolution === "mobile" ? "10px" : "50px")};
+	padding-right: ${({ resolution }) => (resolution === "mobile" ? "10px" : "0")};
+	gap: 20px;
+	margin-bottom: ${({ resolution }) => (resolution === "mobile" ? "425px" : "32px")};
 
-    width: 100%;
+	width: 100%;
 	height: 25%;
 `;
 
-export const StyledDashboardTransactionsContainer = styled.div`
+export const StyledDashboardTransactionsContainer = styled.div<{ resolution?: string }>`
 	display: flex;
 	flex-direction: column;
 
-    padding-left: 50px;
-    padding-right: 50px;
+	padding-left: ${({ resolution }) => (resolution === "mobile" ? "10px" : "50px")};
+	padding-right: ${({ resolution }) => (resolution === "mobile" ? "10px" : "50px")};
 
-    width: 100%;
-	height: 61%;
+	width: 100%;
+	height: ${({ resolution }) => (resolution === "mobile" ? "350px" : "61%")};
 
-    h1 {
+	h1 {
 		display: flex;
 		align-items: center;
 
-		height: 15%;
+		height: ${({ resolution }) => (resolution === "mobile" ? "10%" : "15%")};
 
 		font-size: 28px;
 		font-weight: 600;
 		color: #000000;
 
-        padding-top: 30px;
+		padding-top: ${({ resolution }) => (resolution === "mobile" ? "0" : "30px")};
 	}
 
 	h2 {
@@ -93,8 +96,9 @@ export const StyledDashboardTransactionsContainer = styled.div`
 
 		font-size: 22px;
 		font-weight: 550;
-        color: #95999E;
+		color: #95999e;
 
-		margin-bottom: 10px;
+		margin-top: ${({ resolution }) => (resolution === "mobile" ? "5px" : "0")};
+		margin-bottom: ${({ resolution }) => (resolution === "mobile" ? "30px" : "10px")};
 	}
 `;

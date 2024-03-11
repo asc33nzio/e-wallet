@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledOverviewCardContainer = styled.div<{ type: string }>`
+export const StyledOverviewCardContainer = styled.div<{ type: string; resolution?: string }>`
 	--bg-color-overview: #f9f9f9;
 	--color-overview: #4d47c3;
 	--bg-color-credit: #c9ffd8;
@@ -12,7 +12,9 @@ export const StyledOverviewCardContainer = styled.div<{ type: string }>`
 	flex-direction: column;
 	align-items: center;
 
-	width: ${({ type }) => (type === "overview" ? "35%" : "30%")};
+	width: ${({ type, resolution }) =>
+		type === "overview" && resolution !== "mobile" ? "35%" : resolution !== "mobile" ? "30%" : "100%"};
+
 	height: 100%;
 	border-radius: 15px;
 
@@ -96,6 +98,6 @@ export const StyledOverviewFooterContainer = styled.div<{ type: string }>`
 	padding-left: 25px;
 	padding-bottom: 25px;
 
-    font-size: 18px;
-    font-weight: 550;
+	font-size: 18px;
+	font-weight: 550;
 `;

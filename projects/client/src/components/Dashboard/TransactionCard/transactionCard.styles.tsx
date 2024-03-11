@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledTransactionCardContainer = styled.div<{ type: string }>`
+export const StyledTransactionCardContainer = styled.div<{ type: string; resolution?: string }>`
 	--color-credit: #33a720;
 	--color-debit: #f60707;
 
@@ -10,42 +10,63 @@ export const StyledTransactionCardContainer = styled.div<{ type: string }>`
 	justify-content: space-between;
 
 	width: 100%;
-	height: 100%;
+	height: ${({ resolution }) => (resolution === "mobile" ? "30%" : "25%")};
 	border-radius: 15px;
 	border: 2px solid #ede6e7;
 
-	padding-left: 50px;
-	padding-right: 100px;
+	padding-left: ${({ resolution }) => (resolution === "mobile" ? "10px" : "50px")};
+	padding-right: ${({ resolution }) => (resolution === "mobile" ? "10px" : "100px")};
 	margin-bottom: 10px;
 
 	font-size: 20px;
 	font-weight: 550;
 	color: ${({ type }) => (type === "credit" ? "var(--color-credit)" : "var(--color-debit)")};
 
-    div.txcard_img {
-        width: 5%;
-    }
-
-	img {
-		width: 45px;
-		height: 45px;
+	div.txcard_img {
+		width: ${({ resolution }) => (resolution === "mobile" ? "12%" : "5%")};
 	}
 
-    p.txcard_description {
-        width: 45%;
-        text-align: left;
-        padding-left: 35px;
-    }
+	img {
+		width: ${({ resolution }) => (resolution === "mobile" ? "40px" : "45px")};
+		height: ${({ resolution }) => (resolution === "mobile" ? "40px" : "45px")};
+	}
 
-    p.txcard_date {
-        width: 20%;
-        text-align: left;
-    }
+	p.txcard_description {
+		display: ${({ resolution }) => (resolution === "mobile" ? "flex" : "")};
+		align-items: ${({ resolution }) => (resolution === "mobile" ? "center" : "")};
+
+		width: ${({ resolution }) => (resolution === "mobile" ? "25%" : "45%")};
+		height: ${({ resolution }) => (resolution === "mobile" ? "100%" : "")};
+
+		text-align: left;
+		padding-left: ${({ resolution }) => (resolution === "mobile" ? "0" : "35px")};
+
+		font-size: ${({ resolution }) => (resolution === "mobile" ? "16px" : "")};
+	}
+
+	p.txcard_date {
+		display: ${({ resolution }) => (resolution === "mobile" ? "flex" : "")};
+		align-items: ${({ resolution }) => (resolution === "mobile" ? "center" : "")};
+
+		width: ${({ resolution }) => (resolution === "mobile" ? "25%" : "20%")};
+		height: ${({ resolution }) => (resolution === "mobile" ? "100%" : "")};
+
+		text-align: ${({ resolution }) => (resolution === "mobile" ? "center" : "left")};
+
+		font-size: ${({ resolution }) => (resolution === "mobile" ? "16px" : "")};
+	}
 
 	p.txcard_nominal {
-        width: 20%;
-        text-align: left;
-        padding-left: 100px;
+		display: ${({ resolution }) => (resolution === "mobile" ? "flex" : "")};
+		align-items: ${({ resolution }) => (resolution === "mobile" ? "center" : "")};
+
+		width: ${({ resolution }) => (resolution === "mobile" ? "25%" : "20%")};
+		height: ${({ resolution }) => (resolution === "mobile" ? "100%" : "")};
+
+		text-align: left;
+		padding-left: ${({ resolution }) => (resolution === "mobile" ? "0" : "100px")};
+
+		font-size: ${({ resolution }) => (resolution === "mobile" ? "16px" : "")};
 		color: ${({ type }) => (type === "credit" ? "var(--color-credit)" : "var(--color-debit)")};
 	}
 `;

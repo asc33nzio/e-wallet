@@ -5,9 +5,13 @@ import { AcceptableTransactionType, Transaction } from "../../../types/Transacti
 import { StyledTransactionCardContainer } from "./transactionCard.styles";
 import { formatDate } from "../../../utils/FormatDate";
 
-const TransactionCard = (props: { type: AcceptableTransactionType; transaction: Transaction }): React.ReactElement => {
+const TransactionCard = (props: {
+	type: AcceptableTransactionType;
+	transaction: Transaction;
+	resolution?: string;
+}): React.ReactElement => {
 	return (
-		<StyledTransactionCardContainer type={props.type}>
+		<StyledTransactionCardContainer type={props.type} resolution={props?.resolution}>
 			<div className="txcard_img">
 				{props.type === "credit" ? (
 					<img alt="creditICO" src={CreditICO} />

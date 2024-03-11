@@ -16,11 +16,12 @@ export const OverviewCard = (props: {
 	userData: UserData;
 	income?: number;
 	expense?: number;
+	resolution?: string;
 }): React.ReactElement => {
 	const [show, setShow] = useState<boolean>(false);
 
 	return (
-		<StyledOverviewCardContainer type={props.type}>
+		<StyledOverviewCardContainer type={props.type} resolution={props?.resolution}>
 			<StyledOverviewTitleContainer>
 				{props.type === "overview" ? (
 					<h2>Balance</h2>
