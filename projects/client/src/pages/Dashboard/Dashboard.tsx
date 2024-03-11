@@ -29,7 +29,7 @@ const Dashboard = (): React.ReactElement => {
 	const [threeRecentTransactions, setThreeRecentTransactions] = useState<Transaction[]>([]);
 	const [totalIncome, setTotalIncome] = useState<number>(0);
 	const [totalExpense, setTotalExpense] = useState<number>(0);
-	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
+	const [isDesktopDisplay, setIsDesktopDisplay] = useState(true);
 	const [minimized, setMinimized] = useState<boolean>(false);
 
 	const fetchTransactions = async () => {
@@ -119,7 +119,8 @@ const Dashboard = (): React.ReactElement => {
 	useEffect(() => {
 		if (!isDesktopDisplay) {
 			setMinimized(true);
-		} else {
+		} 
+		else {
 			setMinimized(false);
 		}
 	}, [isDesktopDisplay]);
@@ -174,7 +175,7 @@ const Dashboard = (): React.ReactElement => {
 	) : (
 		<StyledDashboardMainContainer>
 			{showToast ? <Toast message={toastMessage} type={toastType} resolution="mobile" /> : null}
-			<Sidebar minimized={minimized} onClick={handleMinimize} resolution="mobile"/>
+			<Sidebar minimized={minimized} onClick={handleMinimize} resolution="mobile" />
 
 			<StyledDashboardContentContainer resolution="mobile">
 				<StyledDashboardNavbarContainer resolution="mobile">

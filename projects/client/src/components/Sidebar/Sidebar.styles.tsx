@@ -26,7 +26,6 @@ export const StyledTitleSubcontainer = styled.div<{ minimized?: string; resoluti
 	flex-direction: row;
 	align-items: center;
 	justify-content: left;
-	position: ${({ resolution }) => (resolution !== "mobile" ? "" : "absolute")};
 
 	width: 100%;
 	height: 10%;
