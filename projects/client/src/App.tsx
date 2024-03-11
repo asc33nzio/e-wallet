@@ -2,7 +2,7 @@ import Axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "./redux/userSlice";
-import { decodeJWT } from "./utils/jwt";
+import { decodeJWT } from "./utils/DecodeJWT";
 
 const App = (): null => {
 	const dispatch = useDispatch();

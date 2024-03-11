@@ -11,7 +11,12 @@ import { AcceptableOverviewCardType, UserData } from "../../../types/OverviewCar
 import { ImEye, ImEyeBlocked } from "react-icons/im";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
 
-export const OverviewCard = (props: { type: AcceptableOverviewCardType; userData: UserData }): React.ReactElement => {
+export const OverviewCard = (props: {
+	type: AcceptableOverviewCardType;
+	userData: UserData;
+	income?: number;
+	expense?: number;
+}): React.ReactElement => {
 	const [show, setShow] = useState<boolean>(false);
 
 	return (
@@ -54,12 +59,12 @@ export const OverviewCard = (props: { type: AcceptableOverviewCardType; userData
 					</>
 				) : props.type === "credit" ? (
 					<>
-						<h1>IDR {props.userData?.wallet?.balance?.toLocaleString("id-ID")}</h1>
+						<h1>IDR {props.income?.toLocaleString("id-ID")}</h1>
 						<FiTrendingUp size={70} />
 					</>
 				) : (
 					<>
-						<h1>IDR {props.userData?.wallet?.balance?.toLocaleString("id-ID")}</h1>
+						<h1>IDR {props.expense?.toLocaleString("id-ID")}</h1>
 						<FiTrendingDown size={70} />
 					</>
 				)}
