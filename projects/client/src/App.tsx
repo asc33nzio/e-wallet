@@ -6,7 +6,7 @@ import { decodeJWT } from "./utils/jwt";
 
 const App = (): null => {
 	const dispatch = useDispatch();
-	//! Logic to be changed later (rehydrate store)
+	//! Token storing logic to be changed later (rehydrate store)
 	const reduxUserAuthToken = useSelector((state: any) => state?.token?.value);   
 	const userAuthToken = localStorage.getItem("token"); 
 

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import CreditIco from "../../../assets/dashboard/credit.svg";
+import DebitIco from "../../../assets/dashboard/debit.svg";
 import {
 	StyledOverviewCardContainer,
 	StyledOverviewDataContainer,
@@ -6,8 +8,6 @@ import {
 	StyledOverviewTitleContainer,
 } from "./overviewCard.styles";
 import { AcceptableOverviewCardType, UserData } from "../../../types/OverviewCard";
-import CreditIco from "../../../assets/dashboard/overviewCard/credit.svg";
-import DebitIco from "../../../assets/dashboard/overviewCard/debit.svg";
 import { ImEye, ImEyeBlocked } from "react-icons/im";
 import { FiTrendingUp, FiTrendingDown } from "react-icons/fi";
 

@@ -15,29 +15,46 @@ import {
 } from "./dashboard.styles";
 import { useToast } from "../../components/Toast/ToastContext";
 import { useSelector } from "react-redux";
+import { Transaction } from "../../types/Transaction";
+import TransactionCard from "../../components/Dashboard/TransactionCard/TransactionCard";
 
 const Dashboard = (): React.ReactElement => {
-	const userAuthToken = useSelector((state: any) => state?.token?.value);
+	//! Token storing logic to be changed later (rehydrate store)
+	// const userAuthToken = useSelector((state: any) => state?.token?.value);
+	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
 	const { showToast, toastMessage, toastType } = useToast();
-	const [transactions, setTransactions] = useState([])
+	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [totalIncome, setTotalIncome] = useState<number>(0)
+	const [totalExpense, setTotalExpense] = useState<number>(0)
 
 	const fetchTransactions = async () => {
-		try {
-			const response = await Axios.get(
-				`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData.id}/transactions`,
-				{
-					headers: {
-						Authorization: `Bearer ${userAuthToken}`,
-					},
-				},
-			);
+		const lastWeekDate = new Date();
+		const currentDate = new Date();
+		lastWeekDate.setDate(currentDate.getDate() - 7);
+		currentDate.setDate(currentDate.getDate() + 1);
 
-			console.log(response?.data?.data?.transactionHistory);
+		const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+		const formattedLastWeekDate = lastWeekDate.toISOString().split("T")[0];
+		const query = `${userData.id}/transactions?from=${formattedLastWeekDate}&until=${formattedCurrentDate}`;
+
+		try {
+			const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/wallet/${query}`, {
+				headers: {
+					Authorization: `Bearer ${userAuthToken}`,
+				},
+			});
+
+			const txData = response?.data?.data?.transactionHistory;
+			setTransactions(txData);
 		} catch (error: any) {
-			console.log(error?.response?.data);
+			console.log(error);
 		}
 	};
+
+	useEffect(() => {
+		console.log(transactions);
+	}, [transactions]);
 
 	useEffect(() => {
 		fetchTransactions();
@@ -67,6 +84,9 @@ const Dashboard = (): React.ReactElement => {
 					<StyledDashboardTransactionsContainer>
 						<h1>Recent Transactions</h1>
 						<h2>This Week</h2>
+						<TransactionCard type="credit" />
+						<TransactionCard type="debit" />
+						<TransactionCard type="credit" />
 					</StyledDashboardTransactionsContainer>
 				</StyledDashboardContentSubcontainer>
 			</StyledDashboardContentContainer>

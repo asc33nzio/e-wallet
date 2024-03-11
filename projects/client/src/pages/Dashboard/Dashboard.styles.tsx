@@ -67,13 +67,17 @@ export const StyledDashboardTransactionsContainer = styled.div`
 	flex-direction: column;
 
     padding-left: 50px;
+    padding-right: 50px;
 
     width: 100%;
 	height: 61%;
 
-    background-color: whitesmoke;
-
     h1 {
+		display: flex;
+		align-items: center;
+
+		height: 15%;
+
 		font-size: 28px;
 		font-weight: 600;
 		color: #000000;
@@ -82,8 +86,15 @@ export const StyledDashboardTransactionsContainer = styled.div`
 	}
 
 	h2 {
+		display: flex;
+		align-items: center;
+
+		height: 5%;
+
 		font-size: 22px;
 		font-weight: 550;
         color: #95999E;
+
+		margin-bottom: 10px;
 	}
 `;
