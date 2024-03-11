@@ -6,11 +6,17 @@ import guy from "../../assets/person1.png";
 import Toast from "../../components/Toast/Toast";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../components/Toast/ToastContext";
+import { useSelector } from "react-redux";
 
 const Login = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const { showToast, toastMessage, toastType, setToast } = useToast();
 	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
+	const userData = useSelector((state: any) => state?.user?.value);
+
+	const registerClickHandler = () => {
+		navigate("/register");
+	};
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -25,9 +31,11 @@ const Login = (): React.ReactElement => {
 		};
 	}, []);
 
-	const registerClickHandler = () => {
-		navigate("/register");
-	};
+	useEffect(() => {
+		if (Object.keys(userData).length > 0) {
+			navigate("/dashboard");
+		}
+	}, [userData]);
 
 	return isDesktopDisplay ? (
 		<>

@@ -15,15 +15,17 @@ import {
 	StyledDashboardOverviewContainer,
 	StyledDashboardTransactionsContainer,
 } from "./dashboard.styles";
+import { Transaction } from "../../types/Transaction";
 import { useToast } from "../../components/Toast/ToastContext";
 import { useSelector } from "react-redux";
-import { Transaction } from "../../types/Transaction";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = (): React.ReactElement => {
 	//! Token storing logic to be changed later (rehydrate store)
 	// const userAuthToken = useSelector((state: any) => state?.token?.value);
 	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
+	const navigate = useNavigate();
 	const { showToast, toastMessage, toastType } = useToast();
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [threeRecentTransactions, setThreeRecentTransactions] = useState<Transaction[]>([]);
@@ -96,6 +98,12 @@ const Dashboard = (): React.ReactElement => {
 	}, [userData, userAuthToken]);
 
 	useEffect(() => {
+		if (Object.keys(userData).length === 0) {
+			navigate("/");
+		}
+	}, [userData]);
+
+	useEffect(() => {
 		if (transactions !== undefined && transactions !== null && transactions?.length > 0) {
 			calculateWeeklyIncome();
 			calculateWeeklyExpense();
@@ -119,8 +127,7 @@ const Dashboard = (): React.ReactElement => {
 	useEffect(() => {
 		if (!isDesktopDisplay) {
 			setMinimized(true);
-		} 
-		else {
+		} else {
 			setMinimized(false);
 		}
 	}, [isDesktopDisplay]);

@@ -14,10 +14,13 @@ export const StyledSidebarContainer = styled.div<{ minimized?: string; resolutio
 			? "20%"
 			: minimized === "true" && resolution === "mobile"
 			? "90px"
-			: "300px"};
+			: "325px"};
 	height: ${({ resolution }) => (resolution !== "mobile" ? "100vh" : "150vh")};
 
-	background-color: #f6f4f5;
+	background: ${({ minimized, resolution }) =>
+		resolution !== "mobile" || (resolution === "mobile" && minimized === "true")
+			? "#f6f4f5"
+			: "linear-gradient(to right, rgba(246, 244, 245, 1) 50%, rgba(255, 255, 255, 0.8))"};
 	transition: all 3s ease;
 `;
 

@@ -15,6 +15,8 @@ export const StyledDashboardContentContainer = styled.div<{ resolution?: string 
 
 	width: 100%;
 	height: ${({ resolution }) => (resolution === "mobile" ? "150%" : "100%")};
+
+	padding-left: ${({ resolution }) => (resolution === "mobile" ? "90px" : "0")};
 `;
 
 export const StyledDashboardNavbarContainer = styled.div<{ resolution?: string }>`
@@ -23,7 +25,7 @@ export const StyledDashboardNavbarContainer = styled.div<{ resolution?: string }
 	align-items: center;
 
 	width: 100%;
-	height: ${({ resolution }) => (resolution === "mobile" ? "5%" : "10%")};
+	height: ${({ resolution }) => (resolution === "mobile" ? "35%" : "10%")};
 `;
 
 export const StyledDashboardContentSubcontainer = styled.div`

@@ -6,11 +6,17 @@ import guy from "../../assets/person2.png";
 import Toast from "../../components/Toast/Toast";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../components/Toast/ToastContext";
+import { useSelector } from "react-redux";
 
 const Register = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const { showToast, toastMessage, toastType, setToast } = useToast();
 	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
+	const userData = useSelector((state: any) => state?.user?.value);
+
+	const loginClickHandler = () => {
+		navigate("/login");
+	};
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -25,16 +31,16 @@ const Register = (): React.ReactElement => {
 		};
 	}, []);
 
-	const loginClickHandler = () => {
-		navigate("/login");
-	};
+	useEffect(() => {
+		if (Object.keys(userData).length > 0) {
+			navigate("/dashboard");
+		}
+	}, [userData]);
 
 	return isDesktopDisplay ? (
 		<>
 			<Navbar />
-			{showToast ? (
-				<Toast message={toastMessage} type={toastType} resolution="desktop" />
-			) : null}
+			{showToast ? <Toast message={toastMessage} type={toastType} resolution="desktop" /> : null}
 			<div className={classes.container}>
 				<div className={classes.descriptionContainer}>
 					<p className={classes.mainHeading}>Join Us!</p>
