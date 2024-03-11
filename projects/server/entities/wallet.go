@@ -22,7 +22,7 @@ type WalletCompact struct {
 }
 
 type WalletRedacted struct {
-	WalletNumber string
+	WalletNumber string `json:"walletNumber"`
 }
 
 type TransactionRecord struct {

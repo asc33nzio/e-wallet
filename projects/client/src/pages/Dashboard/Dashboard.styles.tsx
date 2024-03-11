@@ -56,7 +56,34 @@ export const StyledDashboardOverviewContainer = styled.div`
 
     padding-left: 50px;
     gap: 20px;
+    margin-bottom: 32px;
 
     width: 100%;
-	height: 30%;
+	height: 25%;
+`;
+
+export const StyledDashboardTransactionsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+
+    padding-left: 50px;
+
+    width: 100%;
+	height: 61%;
+
+    background-color: whitesmoke;
+
+    h1 {
+		font-size: 28px;
+		font-weight: 600;
+		color: #000000;
+
+        padding-top: 30px;
+	}
+
+	h2 {
+		font-size: 22px;
+		font-weight: 550;
+        color: #95999E;
+	}
 `;
