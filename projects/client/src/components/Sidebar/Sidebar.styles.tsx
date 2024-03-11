@@ -1,20 +1,28 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export const StyledSidebarContainer = styled.div<{ minimized?: string }>`
+export const StyledSidebarContainer = styled.div<{ minimized?: string; resolution?: string }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: ${({ resolution }) => (resolution !== "mobile" ? "" : "absolute")};
 
-	width: 20%;
-	width: ${({ minimized }) => (minimized === "true" ? "125px" : "20%")};
-	height: 100vh;
+	width: ${({ minimized, resolution }) =>
+		minimized === "true" && resolution !== "mobile"
+			? "125px"
+			: minimized === "false" && resolution !== "mobile"
+			? "20%"
+			: minimized === "true" && resolution === "mobile"
+			? "90px"
+			: "235px"};
+	height: ${({ resolution }) => (resolution !== "mobile" ? "100vh" : "150vh")};
+
+	opacity: ${({ resolution }) => (resolution !== "mobile" ? "1" : "0.5")};
 	background-color: #f6f4f5;
-
 	transition: all 3s ease;
 `;
 
-export const StyledTitleSubcontainer = styled.div<{ minimized?: string }>`
+export const StyledTitleSubcontainer = styled.div<{ minimized?: string; resolution?: string }>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -26,7 +34,14 @@ export const StyledTitleSubcontainer = styled.div<{ minimized?: string }>`
 
 	cursor: pointer;
 	color: #4d47c3;
-	font-size: ${({ minimized }) => (minimized === "true" ? "24px" : "36px")};
+	font-size: ${({ minimized, resolution }) =>
+		minimized === "true" && resolution !== "mobile"
+			? "24px"
+			: minimized === "false" && resolution !== "mobile"
+			? "36px"
+			: minimized === "true" && resolution === "mobile"
+			? "20px"
+			: "34px"};
 	font-weight: 550;
 	overflow: visible;
 	padding-left: ${({ minimized }) => (minimized === "true" ? "15px" : "35px")};

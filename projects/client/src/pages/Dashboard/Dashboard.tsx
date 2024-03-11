@@ -30,19 +30,7 @@ const Dashboard = (): React.ReactElement => {
 	const [totalIncome, setTotalIncome] = useState<number>(0);
 	const [totalExpense, setTotalExpense] = useState<number>(0);
 	const [isDesktopDisplay, setIsDesktopDisplay] = useState(false);
-
-	useEffect(() => {
-		const handleResize = () => {
-			setIsDesktopDisplay(window.outerWidth > 768);
-		};
-
-		handleResize();
-
-		window.addEventListener("resize", handleResize);
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
+	const [minimized, setMinimized] = useState<boolean>(false);
 
 	const fetchTransactions = async () => {
 		const lastWeekDate = new Date();
@@ -99,6 +87,10 @@ const Dashboard = (): React.ReactElement => {
 		setThreeRecentTransactions(lastThreeRecentTransactions);
 	};
 
+	const handleMinimize = () => {
+		setMinimized(!minimized);
+	};
+
 	useEffect(() => {
 		fetchTransactions();
 	}, [userData, userAuthToken]);
@@ -111,12 +103,33 @@ const Dashboard = (): React.ReactElement => {
 		}
 	}, [transactions]);
 
+	useEffect(() => {
+		const handleResize = () => {
+			setIsDesktopDisplay(window.outerWidth > 768);
+		};
+
+		handleResize();
+
+		window.addEventListener("resize", handleResize);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!isDesktopDisplay) {
+			setMinimized(true);
+		} else {
+			setMinimized(false);
+		}
+	}, [isDesktopDisplay]);
+
 	return isDesktopDisplay ? (
 		<StyledDashboardMainContainer>
 			{showToast ? (
 				<Toast message={toastMessage} type={toastType} orientation="right" resolution="desktop" />
 			) : null}
-			<Sidebar />
+			<Sidebar minimized={minimized} onClick={handleMinimize} />
 
 			<StyledDashboardContentContainer>
 				<StyledDashboardNavbarContainer>
@@ -161,15 +174,17 @@ const Dashboard = (): React.ReactElement => {
 	) : (
 		<StyledDashboardMainContainer>
 			{showToast ? <Toast message={toastMessage} type={toastType} resolution="mobile" /> : null}
-			<Sidebar />
+			<Sidebar minimized={minimized} onClick={handleMinimize} resolution="mobile"/>
 
 			<StyledDashboardContentContainer resolution="mobile">
 				<StyledDashboardNavbarContainer resolution="mobile">
-					<DashboardNavbar resolution="mobile"/>
+					<DashboardNavbar resolution="mobile" />
 				</StyledDashboardNavbarContainer>
 
 				<StyledDashboardContentSubcontainer>
-					<StyledDashboardUsernameContainer resolution="mobile">Hello, {userData.displayName}!</StyledDashboardUsernameContainer>
+					<StyledDashboardUsernameContainer resolution="mobile">
+						Hello, {userData.displayName}!
+					</StyledDashboardUsernameContainer>
 
 					<StyledDashboardOverviewContainer resolution="mobile">
 						<OverviewCard resolution="mobile" type="overview" userData={userData} />
