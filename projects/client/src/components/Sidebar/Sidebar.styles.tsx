@@ -14,10 +14,9 @@ export const StyledSidebarContainer = styled.div<{ minimized?: string; resolutio
 			? "20%"
 			: minimized === "true" && resolution === "mobile"
 			? "90px"
-			: "235px"};
+			: "300px"};
 	height: ${({ resolution }) => (resolution !== "mobile" ? "100vh" : "150vh")};
 
-	opacity: ${({ resolution }) => (resolution !== "mobile" ? "1" : "0.5")};
 	background-color: #f6f4f5;
 	transition: all 3s ease;
 `;
@@ -27,6 +26,7 @@ export const StyledTitleSubcontainer = styled.div<{ minimized?: string; resoluti
 	flex-direction: row;
 	align-items: center;
 	justify-content: left;
+	position: ${({ resolution }) => (resolution !== "mobile" ? "" : "absolute")};
 
 	width: 100%;
 	height: 10%;
