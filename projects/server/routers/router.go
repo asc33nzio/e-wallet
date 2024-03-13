@@ -15,12 +15,11 @@ import (
 func SetupRouter(db *sql.DB) *gin.Engine {
 	router := gin.Default()
 
-	// router.Use(cors.Default())
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"}
 	config.AllowHeaders = []string{"Authorization", "Content-Type"}
 	router.Use(cors.New(config))
-	
+
 	router.Use(middleware.GlobalErrorHandler())
 	router.Use(middleware.RequestLogger)
 	router.Use(middleware.ErrorLogger)
@@ -34,6 +33,7 @@ func SetupRouter(db *sql.DB) *gin.Engine {
 	router.POST("/auth/forget", userController.ForgetPassword)
 	router.POST("/auth/reset/:token", userController.ResetPassword)
 	router.GET("/users/:id", middleware.ValidateJWT(), middleware.ValidateCorrectUserParamEdp(), userController.GetOneUser)
+	router.PATCH("/users/:id", middleware.ValidateJWT(), middleware.ValidateCorrectUserParamEdp(), userController.UpdateProfile)
 
 	walletRepository := repository.NewWalletRepositoryPostgres(db)
 	walletService := service.NewWalletServiceImpl(walletRepository)

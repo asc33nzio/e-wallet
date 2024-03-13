@@ -14,6 +14,7 @@ type UserRepository interface {
 	FindOneByEmail(email string) (*entity.UserCompact, error)
 	CreateUser(user *entity.User) (*entity.User, error)
 	UpdatePassword(userId int32, newPassword string) error
+	UpdateProfile(userId int32, newDisplayName string, newEmail string, newAvatar string) error
 	Login(credentials *entity.AcceptedLoginPayload) (*entity.User, error)
 	FindExistingToken(userId int32) (token *string)
 	RecordResetRequest(userId int32, newToken *string) (*time.Time, error)
@@ -38,6 +39,7 @@ func (r *userRepositoryPostgres) FindOneById(userId int32) (*entity.UserCompact,
 			u.id,
 			u.email,
 			u.displayName,
+			u.avatar,
 			u.createdAt,
 			u.updatedAt,
 			u.deletedAt,
@@ -57,10 +59,12 @@ func (r *userRepositoryPostgres) FindOneById(userId int32) (*entity.UserCompact,
 			u.id = $1;
 		`
 
+	var avatar sql.NullString
 	err := r.db.QueryRow(queryOneUser, userId).Scan(
 		&user.Id,
 		&user.Email,
 		&user.DisplayName,
+		&avatar,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 		&user.DeletedAt,
@@ -75,6 +79,12 @@ func (r *userRepositoryPostgres) FindOneById(userId int32) (*entity.UserCompact,
 		return nil, apperror.NotFound(apperror.ErrUserNotFound404.Error())
 	}
 
+	if avatar.Valid {
+		user.Avatar = avatar.String
+	} else {
+		user.Avatar = "default_ava.png"
+	}
+
 	return &user, nil
 }
 
@@ -86,6 +96,7 @@ func (r *userRepositoryPostgres) FindOneByEmail(email string) (*entity.UserCompa
 			u.id,
 			u.email,
 			u.displayName,
+			u.avatar,
 			u.createdAt,
 			u.updatedAt,
 			u.deletedAt,
@@ -105,10 +116,12 @@ func (r *userRepositoryPostgres) FindOneByEmail(email string) (*entity.UserCompa
 			u.email = $1;
 		`
 
+	var avatar sql.NullString
 	err := r.db.QueryRow(queryOneUser, email).Scan(
 		&user.Id,
 		&user.Email,
 		&user.DisplayName,
+		&avatar,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 		&user.DeletedAt,
@@ -121,6 +134,12 @@ func (r *userRepositoryPostgres) FindOneByEmail(email string) (*entity.UserCompa
 	)
 	if err != nil {
 		return nil, apperror.NotFound(apperror.ErrUserNotFound404.Error())
+	}
+
+	if avatar.Valid {
+		user.Avatar = avatar.String
+	} else {
+		user.Avatar = "default_ava.png"
 	}
 
 	return &user, nil
@@ -226,12 +245,38 @@ func (r *userRepositoryPostgres) UpdatePassword(userId int32, newPassword string
 	return nil
 }
 
+func (r *userRepositoryPostgres) UpdateProfile(userId int32, newDisplayName string, newEmail string, newAvatar string) error {
+	queryUpdateProfile := `
+		UPDATE
+			users
+		SET
+			displayName = $2,
+			email = $3,
+			avatar = $4
+		WHERE
+			id = $1;
+		`
+
+	_, err := r.db.Exec(
+		queryUpdateProfile,
+		userId,
+		newDisplayName,
+		newEmail,
+		newAvatar)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *userRepositoryPostgres) Login(credentials *entity.AcceptedLoginPayload) (*entity.User, error) {
 	queryLogin := `
 		SELECT
 			u.id,
 			u.email,
 			u.displayName,
+			u.avatar,
 			u.password,
 			u.createdAt,
 			u.updatedAt,
@@ -249,6 +294,7 @@ func (r *userRepositoryPostgres) Login(credentials *entity.AcceptedLoginPayload)
 			u.email = $1;
 		`
 	var user entity.User
+	var avatar sql.NullString
 	err := r.db.QueryRow(
 		queryLogin,
 		credentials.Email,
@@ -256,6 +302,7 @@ func (r *userRepositoryPostgres) Login(credentials *entity.AcceptedLoginPayload)
 		&user.Id,
 		&user.Email,
 		&user.DisplayName,
+		&avatar,
 		&user.Password,
 		&user.CreatedAt,
 		&user.UpdatedAt,
@@ -266,6 +313,12 @@ func (r *userRepositoryPostgres) Login(credentials *entity.AcceptedLoginPayload)
 	)
 	if err != nil {
 		return nil, apperror.NotFound(apperror.ErrUserNotFound404.Error())
+	}
+
+	if avatar.Valid {
+		user.Avatar = avatar.String
+	} else {
+		user.Avatar = "default_ava.png"
 	}
 
 	isAuthenticated, err := util.CheckPassword(credentials.Password, []byte(user.Password))

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"e-wallet/apperrors"
 	"e-wallet/constants"
@@ -91,14 +92,14 @@ func (c *UserController) GetOneUser(ctx *gin.Context) {
 		return
 	}
 
-	users, err := c.userService.GetOneById(int32(userIdInt))
+	user, err := c.userService.GetOneById(int32(userIdInt))
 	if err != nil {
 		err := apperror.NotFound(apperror.ErrUserNotFound404.Error())
 		ctx.Error(err)
 		return
 	}
 
-	util.ResponseJSON(ctx.Writer, constant.ResOk200, users, http.StatusOK)
+	util.ResponseJSON(ctx.Writer, constant.ResOk200, user, http.StatusOK)
 }
 
 func (c *UserController) ForgetPassword(ctx *gin.Context) {
@@ -116,7 +117,7 @@ func (c *UserController) ForgetPassword(ctx *gin.Context) {
 		ctx.Error(err)
 		return
 	}
-	
+
 	resetToken, err := util.CreateAndSign(user.Id)
 	if err != nil {
 		util.ResponseJSON(ctx.Writer, apperror.ErrAuth401.Error(), nil, http.StatusUnauthorized)
@@ -124,7 +125,7 @@ func (c *UserController) ForgetPassword(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	
+
 	validUntil, err := c.userService.NewResetRequest(user.Id, &resetToken)
 	if err != nil {
 		ctx.Error(err)
@@ -158,4 +159,37 @@ func (c *UserController) ResetPassword(ctx *gin.Context) {
 	}
 
 	util.ResponseJSON(ctx.Writer, constant.ResOk200, constant.ResUpdated200, http.StatusOK)
+}
+
+func (c *UserController) UpdateProfile(ctx *gin.Context) {
+	ctx.Header("Content-Type", "application/json")
+
+	authToken := ctx.GetHeader("Authorization")
+	token := strings.Split(authToken, " ")[1]
+	if token == "" {
+		err := apperror.Unauthorized(apperror.ErrAuthJWT404.Error())
+		ctx.Error(err)
+		return
+	}
+
+	updateRequest := &entity.AcceptedUpdateProfilePayload{}
+	if err := ctx.ShouldBind(updateRequest); err != nil {
+		err := apperror.BadRequest(apperror.ErrPayloadIncomplete400.Error())
+		ctx.Error(err)
+		return
+	}
+
+	if (updateRequest.Email == nil || *updateRequest.Email == "") && (updateRequest.DisplayName == nil || *updateRequest.DisplayName == "") && (updateRequest.Avatar == nil || *updateRequest.Avatar == "") {
+		err := apperror.BadRequest(apperror.ErrPayloadIncomplete400.Error())
+		ctx.Error(err)
+		return
+	}
+
+	err := c.userService.UpdateProfile(token, updateRequest)
+	if err != nil {
+		ctx.Error(err)
+		return
+	}
+
+	util.ResponseJSON(ctx.Writer, constant.ResOk200, constant.ResProfileUpdated200, http.StatusOK)
 }

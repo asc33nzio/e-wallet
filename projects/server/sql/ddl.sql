@@ -4,6 +4,7 @@ CREATE TABLE users(
     id BIGSERIAL PRIMARY KEY,
     email VARCHAR(64) UNIQUE NOT NULL,
     displayName VARCHAR(32) NOT NULL,
+    avatar VARCHAR(255),
     password BYTEA NOT NULL,
     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
     updatedAt TIMESTAMP NOT NULL DEFAULT NOW(),
