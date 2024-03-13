@@ -1,4 +1,4 @@
-.container {
+.mainContentContainer {
 	display: flex;
 	justify-content: center;
 
@@ -65,5 +65,5 @@
 	object-fit: contain;
 	width: 350px;
 	height: 600px;
-	margin-top: 200px;
+	margin-top: 225px;
 }

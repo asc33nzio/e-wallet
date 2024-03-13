@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import DefaultAvatar from "../../../assets/default_ava.png";
+import DefaultAvatar from "../../assets/default_ava.png";
 import {
 	StyledAvatar,
-	StyledDashboardHeading,
-	StyledDashboardNavbarContainer,
+	StyledMiniNavbarHeading,
+	StyledMiniNavbarContainer,
 	StyledProfileMenu,
 	StyledProfileMenuElement,
-} from "./dashboardNavbar.styles";
-import { ProfileICO, LogoutICO } from "./DashboardNavbarIcons";
+} from "./miniNavbar.styles";
+import { ProfileICO, LogoutICO } from "./MiniNavbarIcons";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setUserData } from "../../../redux/userSlice";
-import { setToken } from "../../../redux/tokenSlice";
+import { setUserData } from "../../redux/userSlice";
+import { setToken } from "../../redux/tokenSlice";
 
-const DashboardNavbar = (props: { resolution?: string }): React.ReactElement => {
+const MiniNavbar = (props: { heading: string; resolution?: string }): React.ReactElement => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [expandMenu, setExpandMenu] = useState<boolean>(false);
@@ -30,8 +30,8 @@ const DashboardNavbar = (props: { resolution?: string }): React.ReactElement => 
 	};
 
 	return (
-		<StyledDashboardNavbarContainer>
-			<StyledDashboardHeading resolution={props?.resolution}>Dashboard</StyledDashboardHeading>
+		<StyledMiniNavbarContainer>
+			<StyledMiniNavbarHeading resolution={props?.resolution}>{props.heading}</StyledMiniNavbarHeading>
 			<StyledAvatar resolution={props?.resolution} src={DefaultAvatar} onClick={handleProfileMenu}></StyledAvatar>
 
 			{expandMenu && (
@@ -46,8 +46,8 @@ const DashboardNavbar = (props: { resolution?: string }): React.ReactElement => 
 					</StyledProfileMenuElement>
 				</StyledProfileMenu>
 			)}
-		</StyledDashboardNavbarContainer>
+		</StyledMiniNavbarContainer>
 	);
 };
 
-export default DashboardNavbar;
+export default MiniNavbar;

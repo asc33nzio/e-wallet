@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import DashboardNavbar from "../../components/Dashboard/Navbar/DashboardNavbar";
+import MiniNavbar from "../../components/NavbarMini/MiniNavbar";
 import Toast from "../../components/Toast/Toast";
 import OverviewCard from "../../components/Dashboard/OverviewCard/OverviewCard";
 import TransactionCard from "../../components/Dashboard/TransactionCard/TransactionCard";
@@ -26,7 +26,7 @@ const Dashboard = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
 	const navigate = useNavigate();
-	const { showToast, toastMessage, toastType } = useToast();
+	const { showToast, toastMessage, toastType, setToast } = useToast();
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [threeRecentTransactions, setThreeRecentTransactions] = useState<Transaction[]>([]);
 	const [totalIncome, setTotalIncome] = useState<number>(0);
@@ -132,6 +132,10 @@ const Dashboard = (): React.ReactElement => {
 		}
 	}, [isDesktopDisplay]);
 
+	setTimeout(() => {
+		setToast(false, "", "");
+	}, 5000);
+
 	return isDesktopDisplay ? (
 		<StyledDashboardMainContainer>
 			{showToast ? (
@@ -141,7 +145,7 @@ const Dashboard = (): React.ReactElement => {
 
 			<StyledDashboardContentContainer>
 				<StyledDashboardNavbarContainer>
-					<DashboardNavbar />
+					<MiniNavbar heading="Dashboard" />
 				</StyledDashboardNavbarContainer>
 
 				<StyledDashboardContentSubcontainer>
@@ -186,7 +190,7 @@ const Dashboard = (): React.ReactElement => {
 
 			<StyledDashboardContentContainer resolution="mobile">
 				<StyledDashboardNavbarContainer resolution="mobile">
-					<DashboardNavbar resolution="mobile" />
+					<MiniNavbar heading="Dashboard" resolution="mobile" />
 				</StyledDashboardNavbarContainer>
 
 				<StyledDashboardContentSubcontainer>

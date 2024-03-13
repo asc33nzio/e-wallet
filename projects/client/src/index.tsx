@@ -11,13 +11,13 @@ import { ToastProvider } from "./components/Toast/ToastContext";
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
 	<React.StrictMode>
-		<ToastProvider>
-			<Provider store={ReduxStore}>
+		<Provider store={ReduxStore}>
+			<ToastProvider>
 				<BrowserRouter>
 					<AppRouter />
 					<App />
 				</BrowserRouter>
-			</Provider>
-		</ToastProvider>
+			</ToastProvider>
+		</Provider>
 	</React.StrictMode>,
 );

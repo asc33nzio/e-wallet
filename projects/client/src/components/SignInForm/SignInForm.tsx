@@ -58,7 +58,7 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 
 			setTimeout(() => {
 				navigate("/dashboard")
-			}, 1000);
+			}, 2000);
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
 			onToastChange(true, errorMessage !== undefined ? errorMessage : "Login Failed", "error");

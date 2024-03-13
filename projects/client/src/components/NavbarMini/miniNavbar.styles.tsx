@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledDashboardNavbarContainer = styled.div`
+export const StyledMiniNavbarContainer = styled.div`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -11,7 +11,7 @@ export const StyledDashboardNavbarContainer = styled.div`
 	border-bottom: 2px solid #ede6e7;
 `;
 
-export const StyledDashboardHeading = styled.h1<{ resolution?: string }>`
+export const StyledMiniNavbarHeading = styled.h1<{ resolution?: string }>`
 	font-size: 36px;
 	font-weight: 550;
 	color: #95999e;

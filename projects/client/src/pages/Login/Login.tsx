@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
 import classes from "./login.module.css";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import SignInForm from "../../components/SignInForm/SignInForm";
-import guy from "../../assets/person1.png";
 import Toast from "../../components/Toast/Toast";
+import guy from "../../assets/person1.png";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../../components/Toast/ToastContext";
 import { useSelector } from "react-redux";
@@ -41,7 +41,7 @@ const Login = (): React.ReactElement => {
 		<>
 			<Navbar />
 			{showToast ? <Toast message={toastMessage} type={toastType} resolution={"desktop"} /> : null}
-			<div className={classes.container}>
+			<main className={classes.mainContentContainer}>
 				<div className={classes.descriptionContainer}>
 					<p className={classes.mainHeading}>Sign in to</p>
 					<p className={classes.subHeading}>Sea Wallet</p>
@@ -57,7 +57,7 @@ const Login = (): React.ReactElement => {
 				<SignInForm
 					onToastChange={(showToast, toastMessage, toastType) => setToast(showToast, toastMessage, toastType)}
 				/>
-			</div>
+			</main>
 		</>
 	) : (
 		<>
