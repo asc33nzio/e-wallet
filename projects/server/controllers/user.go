@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -174,13 +175,52 @@ func (c *UserController) UpdateProfile(ctx *gin.Context) {
 
 	updateRequest := &entity.AcceptedUpdateProfilePayload{}
 	if err := ctx.ShouldBind(updateRequest); err != nil {
+		fmt.Println(updateRequest)
 		err := apperror.BadRequest(apperror.ErrPayloadIncomplete400.Error())
 		ctx.Error(err)
 		return
 	}
 
-	if (updateRequest.Email == nil || *updateRequest.Email == "") && (updateRequest.DisplayName == nil || *updateRequest.DisplayName == "") && (updateRequest.Avatar == nil || *updateRequest.Avatar == "") {
-		err := apperror.BadRequest(apperror.ErrPayloadIncomplete400.Error())
+	if updateRequest.Avatar != nil {
+		file, err := ctx.FormFile("avatar")
+		if err != nil {
+			err := apperror.BadRequest(apperror.ErrAvatar400.Error())
+			ctx.Error(err)
+			return
+		}
+
+		allowedExtensions := [5]string{".jpg", ".jpeg", ".png", ".webp", ".gif"}
+		var validExtension bool
+		for _, ext := range allowedExtensions {
+			if strings.HasSuffix(file.Filename, ext) {
+				validExtension = true
+				break
+			}
+		}
+		if !validExtension {
+			err := apperror.BadRequest(apperror.ErrAvatarFormat400.Error())
+			ctx.Error(err)
+			return
+		}
+
+		if file.Size > (2 * 1024 * 1024) {
+			err := apperror.BadRequest(apperror.ErrAvatarSize400.Error())
+			ctx.Error(err)
+			return
+		}
+
+		filename := util.GenerateRandomFilename("AVIMG-", filepath.Ext(file.Filename))
+		if err := ctx.SaveUploadedFile(file, filepath.Join("public/avatars", filename)); err != nil {
+			err := apperror.InternalServerError()
+			ctx.Error(err)
+			return
+		}
+
+		updateRequest.FileName = &filename
+	}
+
+	if (updateRequest.Email == nil || *updateRequest.Email == "") && (updateRequest.DisplayName == nil || *updateRequest.DisplayName == "") && updateRequest.Avatar == nil {
+		err := apperror.BadRequest(apperror.ErrNoUpdate400.Error())
 		ctx.Error(err)
 		return
 	}
@@ -192,4 +232,23 @@ func (c *UserController) UpdateProfile(ctx *gin.Context) {
 	}
 
 	util.ResponseJSON(ctx.Writer, constant.ResOk200, constant.ResProfileUpdated200, http.StatusOK)
+}
+
+func (c *UserController) GetAvatar(ctx *gin.Context) {
+	userId := ctx.Param("id")
+	userIdInt, err := strconv.Atoi(userId)
+	if err != nil {
+		err := apperror.BadRequest(apperror.ErrParamInvalidId400.Error())
+		ctx.Error(err)
+		return
+	}
+
+	user, err := c.userService.GetOneById(int32(userIdInt))
+	if err != nil {
+		err := apperror.BadRequest(apperror.ErrUserNotFound404.Error())
+		ctx.Error(err)
+		return
+	}
+
+	ctx.File(filepath.Join("public/avatars", user.Avatar))
 }

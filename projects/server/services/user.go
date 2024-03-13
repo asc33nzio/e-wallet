@@ -72,6 +72,7 @@ func (s *UserServiceImpl) Login(credentials *entity.AcceptedLoginPayload) (*enti
 		logger.Error(err.Error())
 		return nil, err
 	}
+	
 	return user, nil
 }
 
@@ -81,8 +82,10 @@ func (s *UserServiceImpl) GetOneById(userId int32) (*entity.UserCompact, error) 
 		logger.Error(err.Error())
 		return nil, err
 	}
+
 	return user, nil
 }
+
 func (s *UserServiceImpl) GetOneByEmail(email string) (*entity.UserCompact, error) {
 	if err := s.validator.Validate.Var(email, "required,email"); err != nil {
 		logger.Error(apperror.ErrPayloadEmailFormat400.Error())
@@ -199,8 +202,7 @@ func (s *UserServiceImpl) UpdateProfile(token string, aupp *entity.AcceptedUpdat
 	}
 
 	if aupp.DisplayName != nil && *aupp.DisplayName == user.DisplayName &&
-		aupp.Email != nil && *aupp.Email == user.Email &&
-		aupp.Avatar != nil && *aupp.Avatar == user.Avatar {
+		aupp.Email != nil && *aupp.Email == user.Email && aupp.Avatar == nil {
 		logger.Error(apperror.ErrNoUpdate400.Error())
 		return apperror.BadRequest(apperror.ErrNoUpdate400.Error())
 	}
@@ -230,8 +232,8 @@ func (s *UserServiceImpl) UpdateProfile(token string, aupp *entity.AcceptedUpdat
 		user.Email = *aupp.Email
 	}
 
-	if aupp.Avatar != nil && *aupp.Avatar != user.Avatar {
-		user.Avatar = *aupp.Avatar
+	if aupp.Avatar != nil {
+		user.Avatar = *aupp.FileName
 	}
 
 	err = s.userRepository.UpdateProfile(int32(uid), user.DisplayName, user.Email, user.Avatar)

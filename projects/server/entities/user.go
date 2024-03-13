@@ -1,6 +1,9 @@
 package entity
 
-import "time"
+import (
+	"mime/multipart"
+	"time"
+)
 
 type User struct {
 	Id          int32      `json:"id"`
@@ -46,7 +49,8 @@ type AcceptedResetPayload struct {
 }
 
 type AcceptedUpdateProfilePayload struct {
-	Email       *string `json:"email" form:"email"`
-	DisplayName *string `json:"displayName" form:"displayName"`
-	Avatar      *string `json:"avatar" form:"avatar"`
+	Email       *string               `json:"email" form:"email"`
+	DisplayName *string               `json:"displayName" form:"displayName"`
+	Avatar      *multipart.FileHeader `json:"avatar" form:"avatar"`
+	FileName    *string
 }

@@ -39,5 +39,8 @@ const (
 	ErrAuthPass401              CustomError = "incorrect login credentials"
 	ErrAuth401                  CustomError = "you need to login to perform this operation"
 	ErrAuth403                  CustomError = "you are not authorized to perform this operation"
+	ErrAvatar400                CustomError = "invalid avatar file"
+	ErrAvatarSize400            CustomError = "pictures must be less than 2MB"
+	ErrAvatarFormat400          CustomError = "only .jpg, .jpeg, .png, .webp, and .gif is supported"
 	ErrInternal500              CustomError = "please try again later"
 )
