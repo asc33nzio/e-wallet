@@ -171,8 +171,8 @@ func (c *WalletController) TransactionHistory(ctx *gin.Context) {
 	sortByLower := strings.ToLower(sortBy)
 	validSortQueries := map[string]bool{
 		"amount":        true,
-		"sourceOfFunds": true,
-		"createdAt":     true,
+		"sourceoffunds": true,
+		"createdat":     true,
 	}
 	if sortBy != "" && !validSortQueries[sortByLower] {
 		err := apperror.BadRequest(apperror.ErrQueryInvalidSortBy400.Error())

@@ -48,7 +48,7 @@ export const StyledOverviewTitleContainer = styled.div<{ $show: boolean }>`
 	height: 18%;
 
 	h1 {
-		font-size: 46px;
+		font-size: 42px;
 		font-weight: 600;
 	}
 
@@ -86,21 +86,21 @@ export const StyledOverviewFilterContainer = styled.div`
 	font-weight: 500;
 	gap: 25px;
 	margin-bottom: 10px;
-`
+`;
 
-export const StyledOverviewFilterElement = styled.select<{$variant: string}>`
+export const StyledOverviewFilterElement = styled.select<{ $variant: string }>`
 	width: ${({ $variant }) => ($variant === "type" ? "125px" : "200px")};
 	height: 35px;
-	
+
 	border: none;
 	outline: none;
 	border-radius: 15px;
-	background-color: #EDE6E7;
-`
+	background-color: #ede6e7;
+`;
 
 export const StyledTableContainer = styled.div`
 	width: 100%;
-	height: 60%;
+	height: 55%;
 
 	border: 1px solid #e2e8f0;
 	border-radius: 25px;
@@ -120,20 +120,46 @@ export const StyledTable = styled.table`
 
 		th {
 			width: 10vw;
+			color: #4a5568;
 			border-bottom: 1px solid #e2e8f0;
+			text-align: left;
+
+			&:nth-child(1) {
+				padding-left: 35px;
+			}
+
+			&:nth-child(4) {
+				text-align: right;
+				padding-right: 35px;
+			}
 		}
 	}
 
 	tbody {
-		text-align: center;
+		text-align: left;
 
 		tr {
 			height: 50px;
+
+			&:nth-last-child(1) {
+				td {
+					border-bottom: none;
+				}
+			}
 		}
 
 		td {
-			background-color: grey;
+			border-bottom: 1px solid #e2e8f0;
 			width: 100px;
+
+			&:nth-child(1) {
+				padding-left: 35px;
+			}
+
+			&:nth-child(4) {
+				text-align: right;
+				padding-right: 35px;
+			}
 		}
 	}
 

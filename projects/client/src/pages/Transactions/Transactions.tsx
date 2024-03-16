@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import MiniNavbar from "../../components/NavbarMini/MiniNavbar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Transaction } from "../../types/Transaction";
+import { PaginationInfo, Transaction } from "../../types/Transaction";
 import {
 	StyledNavigationButton,
 	StyledNavigationContainer,
@@ -19,18 +20,46 @@ import {
 } from "./transactions.styles";
 import { ImEye, ImEyeBlocked } from "react-icons/im";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
+import TxEntry from "./TxEntry/TxEntry";
 
 const Transactions = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
 	const navigate = useNavigate();
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
+		currentPage: 1,
+		entryPerPage: 8,
+		totalEntries: 0,
+		totalPages: 0,
+	});
 	const [minimized, setMinimized] = useState<boolean>(false);
 	const [show, setShow] = useState<boolean>(false);
 
 	const handleMinimize = () => {
 		setMinimized(!minimized);
 	};
+
+	const fetchEntries = async () => {
+		try {
+			const response = await Axios.get(
+				`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData?.id}/transactions?limit=8&currentPage=1&sortOrder=DESC`,
+				{
+					headers: {
+						Authorization: `Bearer ${userAuthToken}`,
+					},
+				},
+			);
+			setPaginationInfo(response?.data?.data?.paginationInfo);
+			setTransactions(response?.data?.data?.transactionHistory);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchEntries();
+	}, [userData]);
 
 	return (
 		<StyledTransactionsMainContainer>
@@ -46,7 +75,7 @@ const Transactions = (): React.ReactElement => {
 						<div>
 							{show ? (
 								<>
-									<h1>IDR {userData?.wallet?.balance?.toLocaleString("id-ID")}</h1>
+									<h1>IDR {userData?.wallet?.balance?.toLocaleString("en-US")}</h1>
 									<ImEyeBlocked size={38} onClick={() => setShow(!show)} />
 								</>
 							) : (
@@ -76,54 +105,9 @@ const Transactions = (): React.ReactElement => {
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
-								<tr>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-									<td>placeholder</td>
-								</tr>
+								{transactions?.map((entry, index) => (
+									<TxEntry key={`txEntry${index}`} data={entry} />
+								))}
 							</tbody>
 						</StyledTable>
 					</StyledTableContainer>

@@ -1,5 +1,5 @@
 type wallet = {
-	WalletNumber: string;
+	walletNumber: string;
 };
 
 type user = {
@@ -17,6 +17,17 @@ export type Transaction = {
 	txTime: string;
 	sender: user;
 	recipient: user;
+};
+
+export type PaginationInfo = {
+	currentPage: number;
+	entryPerPage: number;
+	totalEntries: number;
+	totalPages: number;
+};
+
+export type TxType = {
+	type: "all" | "transfer" | "topup";
 };
 
 export type AcceptableTransactionType = "credit" | "debit";
