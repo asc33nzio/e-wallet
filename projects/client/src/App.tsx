@@ -1,3 +1,4 @@
+import "./index.css";
 import Axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";

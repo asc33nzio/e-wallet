@@ -28,6 +28,7 @@ const Dashboard = (): React.ReactElement => {
 	const navigate = useNavigate();
 	const { showToast, toastMessage, toastType, setToast } = useToast();
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
+	const [weeklyTransactions, setWeeklyTransactions] = useState<Transaction[]>([]);
 	const [threeRecentTransactions, setThreeRecentTransactions] = useState<Transaction[]>([]);
 	const [totalIncome, setTotalIncome] = useState<number>(0);
 	const [totalExpense, setTotalExpense] = useState<number>(0);
@@ -35,6 +36,21 @@ const Dashboard = (): React.ReactElement => {
 	const [minimized, setMinimized] = useState<boolean>(false);
 
 	const fetchTransactions = async () => {
+		try {
+			const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData.id}/transactions?limit=1000&sortOrder=DESC`, {
+				headers: {
+					Authorization: `Bearer ${userAuthToken}`,
+				},
+			});
+
+			const txData = response?.data?.data?.transactionHistory;
+			setTransactions(txData);
+		} catch (error: any) {
+			console.log(error);
+		}
+	};
+
+	const fetchWeeklyTransactions = async () => {
 		const lastWeekDate = new Date();
 		const currentDate = new Date();
 		lastWeekDate.setDate(currentDate.getDate() - 7);
@@ -52,13 +68,13 @@ const Dashboard = (): React.ReactElement => {
 			});
 
 			const txData = response?.data?.data?.transactionHistory;
-			setTransactions(txData);
+			setWeeklyTransactions(txData);
 		} catch (error: any) {
 			console.log(error);
 		}
 	};
 
-	const calculateWeeklyIncome = () => {
+	const calculateTotalIncome = () => {
 		let newTotalIncome = 0;
 		transactions.forEach((transaction) => {
 			if (transaction.recipientId === userData?.id) {
@@ -69,7 +85,7 @@ const Dashboard = (): React.ReactElement => {
 		setTotalIncome(newTotalIncome);
 	};
 
-	const calculateWeeklyExpense = () => {
+	const calculateTotalExpense = () => {
 		let newTotalExpense = 0;
 		transactions.forEach((transaction) => {
 			if (transaction.senderId === userData?.id && transaction.recipientId !== userData?.id) {
@@ -80,10 +96,10 @@ const Dashboard = (): React.ReactElement => {
 		setTotalExpense(newTotalExpense);
 	};
 
-	const findLastThreeRecentTransactions = () => {
+	const findLastThreeRecentWeeklyTransactions = () => {
 		const lastThreeRecentTransactions: Transaction[] = [];
 		for (let i = 0; i < 3; i++) {
-			lastThreeRecentTransactions.push(transactions[i]);
+			lastThreeRecentTransactions.push(weeklyTransactions[i]);
 		}
 
 		setThreeRecentTransactions(lastThreeRecentTransactions);
@@ -95,6 +111,7 @@ const Dashboard = (): React.ReactElement => {
 
 	useEffect(() => {
 		fetchTransactions();
+		fetchWeeklyTransactions();
 	}, [userData, userAuthToken]);
 
 	useEffect(() => {
@@ -104,12 +121,12 @@ const Dashboard = (): React.ReactElement => {
 	}, [userData]);
 
 	useEffect(() => {
-		if (transactions !== undefined && transactions !== null && transactions?.length > 0) {
-			calculateWeeklyIncome();
-			calculateWeeklyExpense();
-			findLastThreeRecentTransactions();
+		if (weeklyTransactions !== undefined && weeklyTransactions !== null && weeklyTransactions?.length > 0) {
+			calculateTotalIncome();
+			calculateTotalExpense();
+			findLastThreeRecentWeeklyTransactions();
 		}
-	}, [transactions]);
+	}, [weeklyTransactions]);
 
 	useEffect(() => {
 		const handleResize = () => {

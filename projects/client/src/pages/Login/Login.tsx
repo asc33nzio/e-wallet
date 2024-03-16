@@ -63,7 +63,7 @@ const Login = (): React.ReactElement => {
 		<>
 			<Navbar />
 			{showToast ? <Toast message={toastMessage} type={toastType} resolution={"mobile"} /> : null}
-			<div className={classes.container}>
+			<div className={classes.mainContentContainer}>
 				<SignInForm
 					onToastChange={(showToast, toastMessage, toastType) => setToast(showToast, toastMessage, toastType)}
 				/>

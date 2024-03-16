@@ -11,7 +11,7 @@ export const StyledToastContainer = styled.div<{ orientation?: string }>`
 	position: absolute;
 	z-index: 2;
 
-	width: 100%;
+	width: 100vw;
 	height: ${(props) => (props.orientation === "right" ? "300px" : "100px")};
 
 	animation: dropAnimation 1.5s ease;
