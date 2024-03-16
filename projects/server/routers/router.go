@@ -34,7 +34,7 @@ func SetupRouter(db *sql.DB) *gin.Engine {
 	router.POST("/auth/reset/:token", userController.ResetPassword)
 	router.GET("/users/:id", middleware.ValidateJWT(), middleware.ValidateCorrectUserParamEdp(), userController.GetOneUser)
 	router.PATCH("/users/:id", middleware.ValidateJWT(), middleware.ValidateCorrectUserParamEdp(), userController.UpdateProfile)
-	router.GET("/avatars/users/:id", userController.GetAvatar)
+	router.GET("/avatars/:imgurl", userController.GetAvatar)
 
 	walletRepository := repository.NewWalletRepositoryPostgres(db)
 	walletService := service.NewWalletServiceImpl(walletRepository)

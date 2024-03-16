@@ -4,7 +4,8 @@ import { ModalType } from "../../types/Modal";
 interface ModalContextProps {
 	showModal: boolean;
 	modalType: ModalType;
-	setModal: (showModal: boolean, modalType: ModalType) => void;
+	openModal: (modalType: ModalType) => void;
+	closeModal: () => void;
 }
 
 const ModalContext = createContext<ModalContextProps | undefined>(undefined);
@@ -15,10 +16,19 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 		modalType: "" as ModalType,
 	});
 
+	const openModal = (modalType: ModalType) => {
+		setModal({ showModal: true, modalType });
+	};
+
+	const closeModal = () => {
+		setModal({ showModal: false, modalType: "" });
+	};
+
 	const value = {
 		showModal: modal.showModal,
 		modalType: modal.modalType,
-		setModal: (showModal: boolean, modalType: ModalType) => setModal({ showModal, modalType }),
+		openModal,
+		closeModal,
 	};
 
 	return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;

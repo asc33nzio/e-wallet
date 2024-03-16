@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import DefaultAvatar from "../../assets/default_ava.png";
+import React, { useEffect, useState } from "react";
 import {
 	StyledAvatar,
 	StyledMiniNavbarHeading,
@@ -8,15 +7,21 @@ import {
 	StyledProfileMenuElement,
 } from "./MiniNavbar.styles";
 import { ProfileICO, LogoutICO } from "./MiniNavbarIcons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserData } from "../../redux/userSlice";
 import { setToken } from "../../redux/tokenSlice";
+import { useModal } from "../Modal/ModalContext";
 
 const MiniNavbar = (props: { heading: string; resolution?: string }): React.ReactElement => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const userData = useSelector((state: any) => state?.user?.value);
 	const [expandMenu, setExpandMenu] = useState<boolean>(false);
+	const [avatar, setAvatar] = useState(
+		`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
+	);
+	const { showModal, modalType, openModal, closeModal } = useModal();
 
 	const handleLogout = () => {
 		dispatch(setUserData({}));
@@ -29,14 +34,20 @@ const MiniNavbar = (props: { heading: string; resolution?: string }): React.Reac
 		setExpandMenu(!expandMenu);
 	};
 
+	useEffect(() => {
+		setAvatar(
+			`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
+		);
+	}, [userData]);
+
 	return (
 		<StyledMiniNavbarContainer>
 			<StyledMiniNavbarHeading resolution={props?.resolution}>{props.heading}</StyledMiniNavbarHeading>
-			<StyledAvatar resolution={props?.resolution} src={DefaultAvatar} onClick={handleProfileMenu}></StyledAvatar>
+			<StyledAvatar resolution={props?.resolution} src={avatar} onClick={handleProfileMenu}></StyledAvatar>
 
 			{expandMenu && (
 				<StyledProfileMenu resolution={props?.resolution}>
-					<StyledProfileMenuElement>
+					<StyledProfileMenuElement onClick={() => openModal("profile")}>
 						<ProfileICO />
 						<button>Profile</button>
 					</StyledProfileMenuElement>

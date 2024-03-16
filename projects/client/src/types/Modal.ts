@@ -1,1 +1,1 @@
-export type ModalType = "profile" | "topup" | " transfer" | "";
+export type ModalType = "profile" | "topup" | "transfer" | "";

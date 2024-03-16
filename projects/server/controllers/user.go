@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -239,20 +240,15 @@ func (c *UserController) UpdateProfile(ctx *gin.Context) {
 }
 
 func (c *UserController) GetAvatar(ctx *gin.Context) {
-	userId := ctx.Param("id")
-	userIdInt, err := strconv.Atoi(userId)
+	imageURL := ctx.Param("imgurl")
+	imagePath := filepath.Join("public/avatars", imageURL)
+
+	_, err := os.Stat(imagePath)
 	if err != nil {
-		err := apperror.BadRequest(apperror.ErrParamInvalidId400.Error())
+		err := apperror.NotFound(apperror.ErrAvatar404.Error())
 		ctx.Error(err)
 		return
 	}
 
-	user, err := c.userService.GetOneById(int32(userIdInt))
-	if err != nil {
-		err := apperror.BadRequest(apperror.ErrUserNotFound404.Error())
-		ctx.Error(err)
-		return
-	}
-
-	ctx.File(filepath.Join("public/avatars", user.Avatar))
+	ctx.File(imagePath)
 }

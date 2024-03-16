@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { ReduxStore } from "./redux";
 import { ToastProvider } from "./components/Toast/ToastContext";
 import { ModalProvider } from "./components/Modal/ModalContext";
+import Modal from "./components/Modal/Modal";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -17,6 +18,7 @@ root.render(
 				<ToastProvider>
 					<RouterProvider router={Router} />
 					<App />
+					<Modal />
 				</ToastProvider>
 			</ModalProvider>
 		</Provider>

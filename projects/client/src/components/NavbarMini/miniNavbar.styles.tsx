@@ -66,20 +66,21 @@ export const StyledProfileMenuElement = styled.div`
 		height: 20px;
 	}
 
-	&:hover path {
-		fill: #4d47c3;
-	}
-
 	button {
 		cursor: pointer;
 		padding-left: 20px;
 		font-size: 16px;
 		font-weight: 550;
-		background: transparent;
+		background: none;
 		border: none;
+	}
 
-		&:hover {
+	&:hover {
+		button {
 			color: #4d47c3;
+		}
+		path {
+			fill: #4d47c3;
 		}
 	}
 `;

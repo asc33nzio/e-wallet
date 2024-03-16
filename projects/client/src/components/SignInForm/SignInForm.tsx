@@ -98,7 +98,6 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 					<Form>
 						<div className={classes.formikFieldContainer}>
 							<Input name="email" placeholder="Enter e-mail" isPassword={false} marBot="25px" />
-
 							<ErrorMessage name="email" component="div" className={classes.inputError} />
 						</div>
 						<div className={classes.formikFieldContainer}>

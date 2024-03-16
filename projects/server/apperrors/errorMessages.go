@@ -42,5 +42,6 @@ const (
 	ErrAvatar400                CustomError = "invalid avatar file"
 	ErrAvatarSize400            CustomError = "pictures must be less than 2MB"
 	ErrAvatarFormat400          CustomError = "only .jpg, .jpeg, .png, .webp, and .gif is supported"
+	ErrAvatar404                CustomError = "image not found"
 	ErrInternal500              CustomError = "please try again later"
 )
