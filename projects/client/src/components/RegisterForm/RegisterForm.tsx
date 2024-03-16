@@ -78,7 +78,7 @@ const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
 			localStorage.setItem("token", jwt)
 
 			onToastChange(true, "Registered successfully", "ok");
-			navigate("/dashboard");
+			navigate("/home/dashboard");
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
 			onToastChange(true, errorMessage !== undefined ? errorMessage : "Login Failed", "error");

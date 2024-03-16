@@ -34,18 +34,18 @@ export const StyledTransactionsContentSubcontainer = styled.div`
 
 	width: 100%;
 	height: 90%;
+
+	padding-left: 50px;
+	padding-right: 50px;
 `;
 
-export const StyledOverviewTitleContainer = styled.div<{ show: string }>`
+export const StyledOverviewTitleContainer = styled.div<{ $show: boolean }>`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 
 	width: 100%;
-	height: 20%;
-	padding-left: 50px;
-	padding-right: 25px;
-	margin-bottom: 15px;
+	height: 18%;
 
 	h1 {
 		font-size: 46px;
@@ -53,6 +53,8 @@ export const StyledOverviewTitleContainer = styled.div<{ show: string }>`
 	}
 
 	h2 {
+		width: 500px;
+
 		color: #95999e;
 		font-size: 22px;
 		font-weight: 450;
@@ -62,48 +64,111 @@ export const StyledOverviewTitleContainer = styled.div<{ show: string }>`
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: ${({ show }) => (show === "true" ? "118px" : "125px")};
+		justify-content: space-between;
+
+		width: 500px;
+		gap: ${({ $show }) => ($show === true ? "118px" : "125px")};
+
 		cursor: pointer;
 	}
 `;
 
-export const StyledTable = styled.table`
-	/* display: flex; */
-	/* flex-direction: column; */
-	/* align-items: center; */
-	/* gap: 100px; */
+export const StyledOverviewFilterContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-end;
+
+	width: 100%;
+	height: 5%;
+
+	font-size: 18px;
+	font-weight: 500;
+	gap: 25px;
+	margin-bottom: 10px;
+`
+
+export const StyledOverviewFilterElement = styled.select<{$variant: string}>`
+	width: ${({ $variant }) => ($variant === "type" ? "125px" : "200px")};
+	height: 35px;
+	
+	border: none;
+	outline: none;
+	border-radius: 15px;
+	background-color: #EDE6E7;
+`
+
+export const StyledTableContainer = styled.div`
+	width: 100%;
+	height: 60%;
 
 	border: 1px solid #e2e8f0;
-	border-radius: 15px;
+	border-radius: 25px;
+`;
+
+export const StyledTable = styled.table`
+	table-layout: fixed;
+	border-collapse: separate;
 
 	width: 95%;
-	height: 500px;
-	margin-left: 50px;
-	padding: 10px;
-    padding-top: 5px;
+
+	margin-left: 40px;
+	overflow-y: auto;
 
 	thead {
+		position: sticky;
+
 		th {
+			width: 10vw;
 			border-bottom: 1px solid #e2e8f0;
 		}
 	}
 
-    tbody {
-        background-color: red;
-        /* display: flex; */
-        /* flex-direction: column; */
-        /* align-items: start;
-        justify-content: start; */
+	tbody {
+		text-align: center;
 
-        text-align: center;
+		tr {
+			height: 50px;
+		}
 
-        td {
-            background-color: grey;
-            align-self: auto;
+		td {
+			background-color: grey;
+			width: 100px;
+		}
+	}
 
-            height: 100px;
-        }
+	tfoot {
+		padding-top: 115px;
+	}
+`;
 
-        width: 1000px;
-    }
+export const StyledNavigationContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+
+	width: 190px;
+	height: 50px;
+
+	margin-top: 10px;
+`;
+
+export const StyledNavigationButton = styled.button`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+
+	width: 60px;
+	height: 40px;
+
+	font-size: 22px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	background-color: #ede6e7;
+
+	cursor: pointer;
 `;

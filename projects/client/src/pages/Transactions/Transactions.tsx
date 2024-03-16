@@ -1,18 +1,24 @@
 import React, { useState } from "react";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import MiniNavbar from "../../components/NavbarMini/MiniNavbar";
 import { useSelector } from "react-redux";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Transaction } from "../../types/Transaction";
 import {
+	StyledNavigationButton,
+	StyledNavigationContainer,
+	StyledOverviewFilterContainer,
+	StyledOverviewFilterElement,
 	StyledOverviewTitleContainer,
 	StyledTable,
+	StyledTableContainer,
 	StyledTransactionsContentContainer,
 	StyledTransactionsContentSubcontainer,
 	StyledTransactionsMainContainer,
 	StyledTransactionsNavbarContainer,
 } from "./transactions.styles";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import MiniNavbar from "../../components/NavbarMini/MiniNavbar";
 import { ImEye, ImEyeBlocked } from "react-icons/im";
+import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 
 const Transactions = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
@@ -36,7 +42,7 @@ const Transactions = (): React.ReactElement => {
 				</StyledTransactionsNavbarContainer>
 
 				<StyledTransactionsContentSubcontainer>
-					<StyledOverviewTitleContainer show={show.toString()}>
+					<StyledOverviewTitleContainer $show={show}>
 						<div>
 							{show ? (
 								<>
@@ -52,31 +58,85 @@ const Transactions = (): React.ReactElement => {
 						</div>
 						<h2>Total balance from account {userData?.wallet?.walletNumber}</h2>
 					</StyledOverviewTitleContainer>
-                    
-                    <StyledTable>
-                        <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>To/From</th>
-                                    <th>Amount</th>
-                                </tr>
-                        </thead>
-                        <tbody>
-                                <tr>
-                                    <td>asd</td>
-                                    <td>asd</td>
-                                    <td>asd</td>
-                                    <td>asd</td>
-                                </tr>
-                                <tr>
-                                    <td>asd</td>
-                                    <td>asd</td>
-                                    <td>asd</td>
-                                    <td>asd</td>
-                                </tr>
-                        </tbody>
-                    </StyledTable>
+					<StyledOverviewFilterContainer>
+						Type
+						<StyledOverviewFilterElement $variant="type"></StyledOverviewFilterElement>
+						Sort
+						<StyledOverviewFilterElement $variant="sort"></StyledOverviewFilterElement>
+					</StyledOverviewFilterContainer>
+
+					<StyledTableContainer>
+						<StyledTable>
+							<thead>
+								<tr>
+									<th>DATE</th>
+									<th>DESCRIPTION</th>
+									<th>TO/FROM</th>
+									<th>AMOUNT</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+								<tr>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+									<td>placeholder</td>
+								</tr>
+							</tbody>
+						</StyledTable>
+					</StyledTableContainer>
+
+					<StyledNavigationContainer>
+						<StyledNavigationButton>
+							<IoIosArrowRoundBack size={35} />
+						</StyledNavigationButton>
+						<StyledNavigationButton disabled={true}>1</StyledNavigationButton>
+						<StyledNavigationButton>
+							<IoIosArrowRoundForward size={35} />
+						</StyledNavigationButton>
+					</StyledNavigationContainer>
 				</StyledTransactionsContentSubcontainer>
 			</StyledTransactionsContentContainer>
 		</StyledTransactionsMainContainer>

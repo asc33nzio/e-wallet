@@ -19,7 +19,7 @@ type UserService interface {
 	GetOneByEmail(email string) (*entity.UserCompact, error)
 	NewResetRequest(userId int32, newToken *string) (*time.Time, error)
 	ResetPassword(token string, arp *entity.AcceptedResetPayload) error
-	UpdateProfile(token string, aupp *entity.AcceptedUpdateProfilePayload) error
+	UpdateProfile(token string, aupp *entity.AcceptedUpdateProfilePayload) (isInfoUpdated bool, isAvatarUpdated bool, err error)
 }
 
 type UserServiceImpl struct {
@@ -72,7 +72,7 @@ func (s *UserServiceImpl) Login(credentials *entity.AcceptedLoginPayload) (*enti
 		logger.Error(err.Error())
 		return nil, err
 	}
-	
+
 	return user, nil
 }
 
@@ -182,64 +182,70 @@ func (s *UserServiceImpl) ResetPassword(token string, arp *entity.AcceptedResetP
 	return nil
 }
 
-func (s *UserServiceImpl) UpdateProfile(token string, aupp *entity.AcceptedUpdateProfilePayload) error {
+func (s *UserServiceImpl) UpdateProfile(token string, aupp *entity.AcceptedUpdateProfilePayload) (isInfoUpdated bool, isAvatarUpdated bool, err error) {
+	var avatarUpdated bool
+	var infoUpdated bool
+
 	claims, err := util.ParseAndVerify(token)
 	if err != nil {
 		logger.Error(apperror.ErrAuthJWT401.Error())
-		return apperror.BadRequest(apperror.ErrAuthJWT401.Error())
+		return false, false, apperror.BadRequest(apperror.ErrAuthJWT401.Error())
 	}
 
 	uid, ok := claims["uid"].(float64)
 	if !ok {
 		logger.Error(apperror.ErrAuth401.Error())
-		return apperror.Unauthorized(apperror.ErrAuth401.Error())
+		return false, false, apperror.Unauthorized(apperror.ErrAuth401.Error())
 	}
 
 	user, err := s.userRepository.FindOneById(int32(uid))
 	if err != nil {
 		logger.Error(apperror.ErrUserNotFound404.Error())
-		return apperror.NotFound(apperror.ErrUserNotFound404.Error())
+		return false, false, apperror.NotFound(apperror.ErrUserNotFound404.Error())
 	}
 
 	if aupp.DisplayName != nil && *aupp.DisplayName == user.DisplayName &&
 		aupp.Email != nil && *aupp.Email == user.Email && aupp.Avatar == nil {
 		logger.Error(apperror.ErrNoUpdate400.Error())
-		return apperror.BadRequest(apperror.ErrNoUpdate400.Error())
+		return false, false, apperror.BadRequest(apperror.ErrNoUpdate400.Error())
 	}
 
 	if aupp.DisplayName != nil && *aupp.DisplayName != user.DisplayName {
 		proposedName := strings.Trim(*aupp.DisplayName, "")
 		if len(proposedName) < 3 {
 			logger.Error(apperror.ErrPayloadNameFormat400.Error())
-			return apperror.BadRequest(apperror.ErrPayloadNameFormat400.Error())
+			return false, false, apperror.BadRequest(apperror.ErrPayloadNameFormat400.Error())
 		}
 
 		user.DisplayName = *aupp.DisplayName
+		infoUpdated = true
 	}
 
 	if aupp.Email != nil && *aupp.Email != user.Email {
 		if err := s.validator.Validate.Var(*aupp.Email, "email"); err != nil {
 			logger.Error(apperror.ErrPayloadEmailFormat400.Error())
-			return apperror.BadRequest(apperror.ErrPayloadEmailFormat400.Error())
+			return false, false, apperror.BadRequest(apperror.ErrPayloadEmailFormat400.Error())
 		}
 
 		existingUserWithSameEmail, _ := s.userRepository.FindOneByEmail(*aupp.Email)
 		if existingUserWithSameEmail != nil {
 			logger.Error(apperror.ErrEmailUsed403.Error())
-			return apperror.NotFound(apperror.ErrEmailUsed403.Error())
+			return false, false, apperror.NotFound(apperror.ErrEmailUsed403.Error())
 		}
 
 		user.Email = *aupp.Email
+		infoUpdated = true
 	}
 
 	if aupp.Avatar != nil {
 		user.Avatar = *aupp.FileName
+		avatarUpdated = true
 	}
 
 	err = s.userRepository.UpdateProfile(int32(uid), user.DisplayName, user.Email, user.Avatar)
 	if err != nil {
-		return err
+		return false, false, err
 	}
 
-	return nil
+	return infoUpdated, avatarUpdated, nil
 }

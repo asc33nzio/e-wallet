@@ -175,7 +175,6 @@ func (c *UserController) UpdateProfile(ctx *gin.Context) {
 
 	updateRequest := &entity.AcceptedUpdateProfilePayload{}
 	if err := ctx.ShouldBind(updateRequest); err != nil {
-		fmt.Println(updateRequest)
 		err := apperror.BadRequest(apperror.ErrPayloadIncomplete400.Error())
 		ctx.Error(err)
 		return
@@ -225,9 +224,14 @@ func (c *UserController) UpdateProfile(ctx *gin.Context) {
 		return
 	}
 
-	err := c.userService.UpdateProfile(token, updateRequest)
-	if err != nil {
+	isInfoUpdated, isAvatarUpdated, err := c.userService.UpdateProfile(token, updateRequest)
+	if err != nil || (!isInfoUpdated && !isAvatarUpdated) {
 		ctx.Error(err)
+		return
+	}
+
+	if !isInfoUpdated && isAvatarUpdated {
+		util.ResponseJSON(ctx.Writer, constant.ResOk200, constant.ResAvatarUpdated200, http.StatusOK)
 		return
 	}
 

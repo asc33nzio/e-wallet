@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	StyledButton,
 	StyledElements,
@@ -15,11 +15,19 @@ import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../redux/userSlice";
 import { setToken } from "../../redux/tokenSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = (props: { minimized: boolean; onClick: any; resolution?: string }): React.ReactElement => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const currentPage = useLocation();
+	const path = currentPage.pathname.split("/");
+	const currentDirectory = path[path.length - 1];
+
+	const [currentDirectoryMap, setCurrentDirectoryMap] = useState({
+		dashboard: false,
+		transactions: false,
+	});
 
 	const handleLogout = () => {
 		dispatch(setUserData({}));
@@ -28,61 +36,78 @@ const Sidebar = (props: { minimized: boolean; onClick: any; resolution?: string 
 		navigate("/");
 	};
 
+	useEffect(() => {
+		setCurrentDirectoryMap((prevMap) => ({
+			...prevMap,
+			[currentDirectory]: true,
+		}));
+	}, [currentDirectory]);
+
 	return (
 		<>
-			<StyledSidebarContainer minimized={props.minimized.toString()} resolution={props.resolution}>
-				<StyledTitleSubcontainer minimized={props.minimized.toString()} resolution={props.resolution}>Sea Wallet</StyledTitleSubcontainer>
+			<StyledSidebarContainer $minimized={props.minimized.toString()} $resolution={props.resolution}>
+				<StyledTitleSubcontainer $minimized={props.minimized.toString()} $resolution={props.resolution}>
+					Sea Wallet
+				</StyledTitleSubcontainer>
 
 				<StyledElementsSubcontainer>
-					<StyledElements>
-						<StyledLink to="/dashboard" minimized={props.minimized.toString()}>
+					<StyledElements $location={currentDirectoryMap.dashboard}>
+						<StyledLink
+							to="/home/dashboard"
+							$minimized={props.minimized.toString()}
+							$active={currentDirectoryMap.dashboard}
+						>
 							<DashboardICO />
-							<StyledParagraph minimized={props.minimized.toString()}>
+							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Dashboard"}
 							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
-					<StyledElements>
-						<StyledLink to="/transactions" minimized={props.minimized.toString()}>
+					<StyledElements $location={currentDirectoryMap.transactions}>
+						<StyledLink
+							to="/home/transactions"
+							$minimized={props.minimized.toString()}
+							$active={currentDirectoryMap.transactions}
+						>
 							<TransactionICO />
-							<StyledParagraph minimized={props.minimized.toString()}>
+							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Transactions"}
 							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/transfer" minimized={props.minimized.toString()}>
+						<StyledLink to="/" $minimized={props.minimized.toString()}>
 							<TransferICO />
-							<StyledParagraph minimized={props.minimized.toString()}>
+							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Transfer"}
 							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/topup" minimized={props.minimized.toString()}>
+						<StyledLink to="/" $minimized={props.minimized.toString()}>
 							<TopUpICO />
-							<StyledParagraph minimized={props.minimized.toString()}>
+							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Top Up"}
 							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/rewards" minimized={props.minimized.toString()}>
-							<GiPerspectiveDiceSixFacesRandom />
-							<StyledParagraph minimized={props.minimized.toString()}>
+						<StyledLink to="/" $minimized={props.minimized.toString()}>
+							<GiPerspectiveDiceSixFacesRandom size={28} fill="#95999E" className="rewardSidebarIcon" />
+							<StyledParagraph $minimized={props.minimized.toString()} className="rewardSidebarText">
 								{!props.minimized && "Rewards"}
 							</StyledParagraph>
 						</StyledLink>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledButton onClick={handleLogout} minimized={props.minimized.toString()}>
+						<StyledButton onClick={handleLogout} $minimized={props.minimized.toString()}>
 							<LogoutICO />
-							<StyledParagraph minimized={props.minimized.toString()}>
+							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Logout"}
 							</StyledParagraph>
 						</StyledButton>

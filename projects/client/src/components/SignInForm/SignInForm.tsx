@@ -57,7 +57,7 @@ const SignInForm = ({ onToastChange }: SignInFormProps): React.ReactElement => {
 			localStorage.setItem("token", jwt)
 
 			setTimeout(() => {
-				navigate("/dashboard")
+				navigate("/home/dashboard")
 			}, 2000);
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;

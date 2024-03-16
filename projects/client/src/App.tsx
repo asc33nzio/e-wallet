@@ -7,8 +7,8 @@ import { decodeJWT } from "./utils/DecodeJWT";
 const App = (): null => {
 	const dispatch = useDispatch();
 	//! Token storing logic to be changed later (rehydrate store)
-	const reduxUserAuthToken = useSelector((state: any) => state?.token?.value);   
-	const userAuthToken = localStorage.getItem("token"); 
+	const reduxUserAuthToken = useSelector((state: any) => state?.token?.value);
+	const userAuthToken = localStorage.getItem("token");
 
 	const keepLogin = async () => {
 		try {
@@ -21,7 +21,7 @@ const App = (): null => {
 				},
 			});
 
-			const userData = response?.data?.data;            
+			const userData = response?.data?.data;
 			dispatch(setUserData(userData));
 		} catch (error: any) {
 			console.error(error?.response);
@@ -29,9 +29,7 @@ const App = (): null => {
 	};
 
 	useEffect(() => {
-		// if (userAuthToken && userAuthToken !== undefined) {
-			keepLogin();
-		// }
+		keepLogin();
 	}, [dispatch, userAuthToken, reduxUserAuthToken]);
 
 	return null;

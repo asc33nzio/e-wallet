@@ -1,30 +1,30 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-export const StyledSidebarContainer = styled.div<{ minimized?: string; resolution?: string }>`
+export const StyledSidebarContainer = styled.div<{ $minimized?: string; $resolution?: string }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	position: ${({ resolution }) => (resolution !== "mobile" ? "" : "absolute")};
+	position: ${({ $resolution }) => ($resolution !== "mobile" ? "" : "absolute")};
 
-	width: ${({ minimized, resolution }) =>
-		minimized === "true" && resolution !== "mobile"
+	width: ${({ $minimized, $resolution }) =>
+		$minimized === "true" && $resolution !== "mobile"
 			? "125px"
-			: minimized === "false" && resolution !== "mobile"
+			: $minimized === "false" && $resolution !== "mobile"
 			? "20%"
-			: minimized === "true" && resolution === "mobile"
+			: $minimized === "true" && $resolution === "mobile"
 			? "90px"
 			: "325px"};
-	height: ${({ resolution }) => (resolution !== "mobile" ? "100vh" : "150vh")};
+	height: ${({ $resolution }) => ($resolution !== "mobile" ? "100vh" : "150vh")};
 
-	background: ${({ minimized, resolution }) =>
-		resolution !== "mobile" || (resolution === "mobile" && minimized === "true")
+	background: ${({ $minimized, $resolution }) =>
+		$resolution !== "mobile" || ($resolution === "mobile" && $minimized === "true")
 			? "#f6f4f5"
 			: "linear-gradient(to right, rgba(246, 244, 245, 1) 50%, rgba(255, 255, 255, 0.8))"};
 	transition: all 3s ease;
 `;
 
-export const StyledTitleSubcontainer = styled.div<{ minimized?: string; resolution?: string }>`
+export const StyledTitleSubcontainer = styled.div<{ $minimized?: string; $resolution?: string }>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -36,17 +36,17 @@ export const StyledTitleSubcontainer = styled.div<{ minimized?: string; resoluti
 
 	cursor: pointer;
 	color: #4d47c3;
-	font-size: ${({ minimized, resolution }) =>
-		minimized === "true" && resolution !== "mobile"
+	font-size: ${({ $minimized, $resolution }) =>
+		$minimized === "true" && $resolution !== "mobile"
 			? "24px"
-			: minimized === "false" && resolution !== "mobile"
+			: $minimized === "false" && $resolution !== "mobile"
 			? "36px"
-			: minimized === "true" && resolution === "mobile"
+			: $minimized === "true" && $resolution === "mobile"
 			? "20px"
 			: "34px"};
 	font-weight: 550;
 	overflow: visible;
-	padding-left: ${({ minimized }) => (minimized === "true" ? "15px" : "35px")};
+	padding-left: ${({ $minimized }) => ($minimized === "true" ? "15px" : "35px")};
 
 	transition: all 3s ease;
 `;
@@ -62,7 +62,7 @@ export const StyledElementsSubcontainer = styled.div`
 	gap: 35px;
 `;
 
-export const StyledElements = styled.div`
+export const StyledElements = styled.div<{ $location?: boolean }>`
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -72,12 +72,27 @@ export const StyledElements = styled.div`
 	padding-left: 30px;
 	gap: 25px;
 
-	color: #95999e;
 	font-size: 24px;
 	font-weight: 400;
+
+	p {
+		color: ${({ $location }) => ($location ? "#4d47c3" : "#95999e")};
+	}
+
+	path {
+		fill: ${({ $location }) => ($location ? "#4d47c3" : "#95999e")};
+	}
+
+	&:hover p {
+		color: #4d47c3;
+	}
+
+	&:hover path {
+		fill: #4d47c3;
+	}
 `;
 
-export const StyledLink = styled(Link)<{ minimized?: string }>`
+export const StyledLink = styled(Link)<{ $minimized?: string; $active?: boolean }>`
 	cursor: pointer;
 	display: flex;
 	flex-direction: row;
@@ -87,18 +102,26 @@ export const StyledLink = styled(Link)<{ minimized?: string }>`
 	width: 100%;
 	text-decoration: none;
 
-	&:hover path {
-		fill: #4d47c3;
-	}
-
 	transition: all 3s ease;
-	animation: typing 2s steps(100, end);
+	animation: ${({ $active }) => ($active === true ? "typing-active 2s steps(500, end)" : "typing 2s steps(500, end)")};
 	@keyframes typing {
 		0% {
 			width: 0;
 			overflow: hidden;
 			white-space: nowrap;
-			border-right: ${({ minimized }) => (minimized === "true" ? "none" : "2px solid #4d47c3")};
+			border-right: ${({ $minimized }) => ($minimized === "true" ? "none" : "7px solid #95999e")};
+		}
+		100% {
+			width: 100%;
+		}
+	}
+
+	@keyframes typing-active {
+		0% {
+			width: 0;
+			overflow: hidden;
+			white-space: nowrap;
+			border-right: ${({ $minimized }) => ($minimized === "true" ? "none" : "7px solid aquamarine")};
 		}
 		100% {
 			width: 100%;
@@ -106,7 +129,7 @@ export const StyledLink = styled(Link)<{ minimized?: string }>`
 	}
 `;
 
-export const StyledButton = styled.button<{ minimized?: string }>`
+export const StyledButton = styled.button<{ $minimized?: string }>`
 	cursor: pointer;
 	display: flex;
 	flex-direction: row;
@@ -123,17 +146,13 @@ export const StyledButton = styled.button<{ minimized?: string }>`
 	font-weight: 550;
 	text-align: left;
 
-	&:hover path {
-		fill: #4d47c3;
-	}
-
-	animation: typing_button 2s steps(100, end);
+	animation: typing_button 2s steps(500, end);
 	@keyframes typing_button {
 		0% {
 			width: 0;
 			overflow: hidden;
 			white-space: nowrap;
-			border-right: ${({ minimized }) => (minimized === "true" ? "none" : "2px solid #4d47c3")};
+			border-right: ${({ $minimized }) => ($minimized === "true" ? "none" : "7px solid #95999e")};
 		}
 		100% {
 			width: 100%;
@@ -141,15 +160,15 @@ export const StyledButton = styled.button<{ minimized?: string }>`
 	}
 `;
 
-export const StyledParagraph = styled.p<{ minimized?: string }>`
+export const StyledParagraph = styled.p<{ $minimized?: string }>`
 	color: #95999e;
 	white-space: nowrap;
 	font-weight: 550;
-	transform: translateX(${({ minimized }) => (minimized === "true" ? "-60%" : "0")});
+	transform: translateX(${({ $minimized }) => ($minimized === "true" ? "-60%" : "0")});
 	transition: transform 3s ease;
 
-	&:hover {
-		color: #4d47c3;
+	&.rewardSidebarText {
+		margin-left: -5px;
 	}
 `;
 
@@ -169,14 +188,6 @@ export const StyledIcon = styled.button`
 	font-size: 28px;
 	font-weight: 550;
 	text-align: left;
-
-	&:hover {
-		color: #4d47c3;
-	}
-
-	&:hover path {
-		fill: #4d47c3;
-	}
 `;
 
 export const StyledFooterSubcontainer = styled.div`

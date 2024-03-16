@@ -33,7 +33,7 @@ const Register = (): React.ReactElement => {
 
 	useEffect(() => {
 		if (Object.keys(userData).length > 0) {
-			navigate("/dashboard");
+			navigate("/home/dashboard");
 		}
 	}, [userData]);
 
