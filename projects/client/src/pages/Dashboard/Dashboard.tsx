@@ -14,7 +14,7 @@ import {
 	StyledDashboardUsernameContainer,
 	StyledDashboardOverviewContainer,
 	StyledDashboardTransactionsContainer,
-} from "./dashboard.styles";
+} from "./Dashboard.styles";
 import { Transaction } from "../../types/Transaction";
 import { useToast } from "../../components/Toast/ToastContext";
 import { useSelector } from "react-redux";

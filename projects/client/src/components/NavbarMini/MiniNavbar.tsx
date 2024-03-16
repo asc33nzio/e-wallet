@@ -6,7 +6,7 @@ import {
 	StyledMiniNavbarContainer,
 	StyledProfileMenu,
 	StyledProfileMenuElement,
-} from "./miniNavbar.styles";
+} from "./MiniNavbar.styles";
 import { ProfileICO, LogoutICO } from "./MiniNavbarIcons";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

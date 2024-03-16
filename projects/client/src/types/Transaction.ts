@@ -30,4 +30,8 @@ export type TxType = {
 	type: "all" | "transfer" | "topup";
 };
 
+export type TxSortType = {
+	sort: "amountAsc" | "amountDesc" | "dateAsc" | "dateDesc";
+};
+
 export type AcceptableTransactionType = "credit" | "debit";

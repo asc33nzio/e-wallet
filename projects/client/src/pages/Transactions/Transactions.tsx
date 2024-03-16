@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import MiniNavbar from "../../components/NavbarMini/MiniNavbar";
+import TxEntry from "./TxEntry/TxEntry";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { PaginationInfo, Transaction } from "../../types/Transaction";
+import { PaginationInfo, Transaction, TxSortType, TxType } from "../../types/Transaction";
+import { ImEye, ImEyeBlocked } from "react-icons/im";
+import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import {
+	Option,
+	OptionList,
 	StyledNavigationButton,
 	StyledNavigationContainer,
 	StyledOverviewFilterContainer,
@@ -17,15 +21,11 @@ import {
 	StyledTransactionsContentSubcontainer,
 	StyledTransactionsMainContainer,
 	StyledTransactionsNavbarContainer,
-} from "./transactions.styles";
-import { ImEye, ImEyeBlocked } from "react-icons/im";
-import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
-import TxEntry from "./TxEntry/TxEntry";
+} from "./Transactions.styles";
 
 const Transactions = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
-	const navigate = useNavigate();
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>({
 		currentPage: 1,
@@ -33,8 +33,67 @@ const Transactions = (): React.ReactElement => {
 		totalEntries: 0,
 		totalPages: 0,
 	});
-	const [minimized, setMinimized] = useState<boolean>(false);
 	const [show, setShow] = useState<boolean>(false);
+	const [minimized, setMinimized] = useState<boolean>(false);
+	const [isTypeSelectOpen, setIsTypeSelectOpen] = useState(false);
+	const [isSortSelectOpen, setIsSortSelectOpen] = useState(false);
+	const [selectedTypeOption, setSelectedTypeOption] = useState<TxType>({ type: "all" });
+	const [selectedSortOption, setSelectedSortOption] = useState<TxSortType>({ sort: "amountAsc" });
+	const [searchQuery, setSearchQuery] = useState<string>("");
+	const [sortBy, setSortBy] = useState<string>("amount");
+	const [sortOrder, setSortOrder] = useState<string>("asc");
+	const [currentPage, setCurrentPage] = useState<number>(1);
+
+	const handleTypeSelectOption = (option: TxType) => {
+		setSelectedTypeOption(option);
+		setIsTypeSelectOpen(false);
+
+		if (option.type === "all") {
+			setSearchQuery("");
+		}
+		if (option.type === "transfer") {
+			setSearchQuery("transfer");
+		}
+		if (option.type === "topup") {
+			setSearchQuery("top up");
+		}
+	};
+
+	const handleSortSelectOption = (option: TxSortType) => {
+		setSelectedSortOption(option);
+		setIsSortSelectOpen(false);
+
+		if (option.sort === "amountAsc") {
+			setSortBy("amount");
+			setSortOrder("asc");
+		}
+		if (option.sort === "amountDesc") {
+			setSortBy("amount");
+			setSortOrder("desc");
+		}
+		if (option.sort === "dateAsc") {
+			setSortBy("createdAt");
+			setSortOrder("asc");
+		}
+		if (option.sort === "dateDesc") {
+			setSortBy("createdAt");
+			setSortOrder("desc");
+		}
+	};
+
+	const handlePrevPage = () => {
+		if (currentPage <= 1) {
+			return;
+		}
+		setCurrentPage(currentPage - 1);
+	};
+
+	const handleNextPage = () => {
+		if (currentPage >= paginationInfo.totalPages) {
+			return;
+		}
+		setCurrentPage(currentPage + 1);
+	};
 
 	const handleMinimize = () => {
 		setMinimized(!minimized);
@@ -43,7 +102,7 @@ const Transactions = (): React.ReactElement => {
 	const fetchEntries = async () => {
 		try {
 			const response = await Axios.get(
-				`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData?.id}/transactions?limit=8&currentPage=1&sortOrder=DESC`,
+				`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData?.id}/transactions?limit=8&currentPage=${currentPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchQ=${searchQuery}`,
 				{
 					headers: {
 						Authorization: `Bearer ${userAuthToken}`,
@@ -59,7 +118,7 @@ const Transactions = (): React.ReactElement => {
 
 	useEffect(() => {
 		fetchEntries();
-	}, [userData]);
+	}, [userData, searchQuery, sortBy, sortOrder, currentPage]);
 
 	return (
 		<StyledTransactionsMainContainer>
@@ -87,11 +146,50 @@ const Transactions = (): React.ReactElement => {
 						</div>
 						<h2>Total balance from account {userData?.wallet?.walletNumber}</h2>
 					</StyledOverviewTitleContainer>
+
 					<StyledOverviewFilterContainer>
-						Type
-						<StyledOverviewFilterElement $variant="type"></StyledOverviewFilterElement>
-						Sort
-						<StyledOverviewFilterElement $variant="sort"></StyledOverviewFilterElement>
+						<p>Type</p>
+						<StyledOverviewFilterElement
+							$variant="type"
+							onClick={() => setIsTypeSelectOpen(!isTypeSelectOpen)}
+						>
+							{selectedTypeOption.type === "all"
+								? "All"
+								: selectedTypeOption.type === "transfer"
+								? "Transfer"
+								: "Top Up"}
+							<OptionList $isOpen={isTypeSelectOpen}>
+								<Option onClick={() => handleTypeSelectOption({ type: "all" })}>All</Option>
+								<Option onClick={() => handleTypeSelectOption({ type: "transfer" })}>Transfer</Option>
+								<Option onClick={() => handleTypeSelectOption({ type: "topup" })}>Top Up</Option>
+							</OptionList>
+						</StyledOverviewFilterElement>
+
+						<p>Sort</p>
+						<StyledOverviewFilterElement
+							$variant="sort"
+							onClick={() => setIsSortSelectOpen(!isSortSelectOpen)}
+						>
+							{selectedSortOption.sort === "amountAsc"
+								? "Amount - Asc"
+								: selectedSortOption.sort === "amountDesc"
+								? "Amount - Desc"
+								: selectedSortOption.sort === "dateAsc"
+								? "Date - Asc"
+								: "Date - Desc"}
+							<OptionList $isOpen={isSortSelectOpen}>
+								<Option onClick={() => handleSortSelectOption({ sort: "amountAsc" })}>
+									Amount - Asc
+								</Option>
+								<Option onClick={() => handleSortSelectOption({ sort: "amountDesc" })}>
+									Amount - Desc
+								</Option>
+								<Option onClick={() => handleSortSelectOption({ sort: "dateAsc" })}>Date - Asc</Option>
+								<Option onClick={() => handleSortSelectOption({ sort: "dateDesc" })}>
+									Date - Desc
+								</Option>
+							</OptionList>
+						</StyledOverviewFilterElement>
 					</StyledOverviewFilterContainer>
 
 					<StyledTableContainer>
@@ -113,12 +211,20 @@ const Transactions = (): React.ReactElement => {
 					</StyledTableContainer>
 
 					<StyledNavigationContainer>
-						<StyledNavigationButton>
-							<IoIosArrowRoundBack size={35} />
+						<StyledNavigationButton $limit={currentPage === 1}>
+							<IoIosArrowRoundBack
+								size={35}
+								onClick={handlePrevPage}
+								fill={currentPage === 1 ? "white" : "black"}
+							/>
 						</StyledNavigationButton>
-						<StyledNavigationButton disabled={true}>1</StyledNavigationButton>
-						<StyledNavigationButton>
-							<IoIosArrowRoundForward size={35} />
+						<StyledNavigationButton disabled={true}>{currentPage}</StyledNavigationButton>
+						<StyledNavigationButton $limit={currentPage === paginationInfo.totalPages}>
+							<IoIosArrowRoundForward
+								size={35}
+								onClick={handleNextPage}
+								fill={currentPage === paginationInfo.totalPages ? "white" : "black"}
+							/>
 						</StyledNavigationButton>
 					</StyledNavigationContainer>
 				</StyledTransactionsContentSubcontainer>

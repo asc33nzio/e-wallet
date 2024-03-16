@@ -73,6 +73,8 @@ export const StyledOverviewTitleContainer = styled.div<{ $show: boolean }>`
 	}
 `;
 
+//! Custom Select Start
+
 export const StyledOverviewFilterContainer = styled.div`
 	display: flex;
 	flex-direction: row;
@@ -88,15 +90,53 @@ export const StyledOverviewFilterContainer = styled.div`
 	margin-bottom: 10px;
 `;
 
-export const StyledOverviewFilterElement = styled.select<{ $variant: string }>`
+export const StyledOverviewFilterElement = styled.div<{ $variant: string }>`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	position: relative;
+	z-index: 1;
 	width: ${({ $variant }) => ($variant === "type" ? "125px" : "200px")};
 	height: 35px;
 
-	border: none;
-	outline: none;
+	text-align: center;
 	border-radius: 15px;
 	background-color: #ede6e7;
+	cursor: pointer;
 `;
+
+export const OptionList = styled.div<{ $isOpen: boolean }>`
+	position: absolute;
+	display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
+	top: 115%;
+
+	width: 100%;
+	background-color: #ede6e7;
+	border-radius: 15px;
+`;
+
+export const Option = styled.div`
+	padding: 10px;
+	cursor: pointer;
+
+	&:hover {
+		color: white;
+		background-color: #4d47c3;
+	}
+
+	&:nth-child(1) {
+		border-top-right-radius: 15px;
+		border-top-left-radius: 15px;
+	}
+
+	&:nth-last-child(1) {
+		border-bottom-right-radius: 15px;
+		border-bottom-left-radius: 15px;
+	}
+`;
+
+//! Custom Select End
 
 export const StyledTableContainer = styled.div`
 	width: 100%;
@@ -180,7 +220,7 @@ export const StyledNavigationContainer = styled.div`
 	margin-top: 10px;
 `;
 
-export const StyledNavigationButton = styled.button`
+export const StyledNavigationButton = styled.button<{$limit?: boolean}>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -194,7 +234,7 @@ export const StyledNavigationButton = styled.button`
 	border-radius: 5px;
 	outline: none;
 	border: none;
-	background-color: #ede6e7;
+	background-color: ${({ $limit }) => ($limit ? "black" : "#ede6e7")};
 
-	cursor: pointer;
+	cursor: ${({ $limit }) => (!$limit && $limit !== undefined ? "pointer" : "not-allowed")};
 `;
