@@ -1,6 +1,7 @@
 import Axios from "axios";
 import Toast from "../Toast/Toast";
 import React, { useEffect, useState } from "react";
+import FileInput from "./ModalIcons";
 import { useModal } from "./ModalContext";
 import {
 	EditButton,
@@ -13,7 +14,6 @@ import {
 	ModalContent,
 } from "./Modal.styles";
 import { useSelector } from "react-redux";
-import { EditICO } from "./ModalIcons";
 import { useToast } from "../Toast/ToastContext";
 
 const Modal = (): React.ReactElement => {
@@ -29,6 +29,7 @@ const Modal = (): React.ReactElement => {
 	const [currentAvatar, setCurrentAvatar] = useState(
 		`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
 	);
+	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 	const [avatar, setAvatar] = useState<File | null>(null);
 
 	const handleEmailValidation = (input: string) => {
@@ -65,6 +66,11 @@ const Modal = (): React.ReactElement => {
 		const file = event.target.files?.[0];
 		if (file) {
 			setAvatar(file);
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setAvatarPreview(reader.result as string);
+			};
+			reader.readAsDataURL(file);
 		}
 	};
 
@@ -100,9 +106,13 @@ const Modal = (): React.ReactElement => {
 				},
 			});
 
+			const message = response?.data?.data;
+			setToast(true, message, "ok", true);
+
+			setTimeout(() => {
+				closeModal();
+			}, 3000);
 			setIsLoading(false);
-			setToast(true, "Profile Updated", "ok", true);
-			closeModal();
 		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
 			setToast(true, errorMessage, "error", true);
@@ -110,11 +120,21 @@ const Modal = (): React.ReactElement => {
 		}
 	};
 
+	const handleClose = () => {
+		setAvatar(null);
+		setAvatarPreview(null);
+		closeModal();
+	};
+
 	useEffect(() => {
-		setCurrentAvatar(
-			`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
-		);
-	}, [userData, isLoading]);
+		if (!showModal) {
+			setCurrentAvatar(
+				`${process.env.REACT_APP_API_BASE_URL}/avatars/${
+					userData?.avatar ? userData.avatar : "default_ava.png"
+				}`,
+			);
+		}
+	}, [userData, isLoading, showModal, closeModal]);
 
 	return (
 		<>
@@ -122,9 +142,8 @@ const Modal = (): React.ReactElement => {
 			{showModal && (
 				<MainContainer id="main-modal-container">
 					<ModalContent>
-						<img alt="avatar" src={currentAvatar} />
-						<EditICO />
-						<input type="file" onChange={handleAvatarChange} />
+						<img alt="avatar" src={avatarPreview || currentAvatar} />
+						<FileInput onChange={handleAvatarChange} />
 
 						<EditInputGroupContainer>
 							<span>Email</span>
@@ -158,7 +177,7 @@ const Modal = (): React.ReactElement => {
 							>
 								Save
 							</EditButton>
-							<EditButton $type="cancel" onClick={closeModal}>
+							<EditButton $type="cancel" onClick={handleClose}>
 								Cancel
 							</EditButton>
 						</EditButtonGroupContainer>

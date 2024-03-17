@@ -8,8 +8,12 @@ export const StyledToastContainer = styled.div<{ orientation?: string }>`
 	padding-right: ${(props) => (props.orientation === "right" ? "50px" : 0)};
 	padding-left: ${(props) => (props.orientation === "left" ? "50px" : 0)};
 
-	position: absolute;
-	z-index: 2;
+	position: fixed;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 
 	width: 100vw;
 	height: ${(props) => (props.orientation === "right" ? "300px" : "100px")};

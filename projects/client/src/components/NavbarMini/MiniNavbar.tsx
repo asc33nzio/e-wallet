@@ -16,12 +16,12 @@ import { useModal } from "../Modal/ModalContext";
 const MiniNavbar = (props: { heading: string; resolution?: string }): React.ReactElement => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const { openModal } = useModal();
 	const userData = useSelector((state: any) => state?.user?.value);
 	const [expandMenu, setExpandMenu] = useState<boolean>(false);
 	const [avatar, setAvatar] = useState(
 		`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
 	);
-	const { showModal, modalType, openModal, closeModal } = useModal();
 
 	const handleLogout = () => {
 		dispatch(setUserData({}));

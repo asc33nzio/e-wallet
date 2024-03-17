@@ -26,7 +26,7 @@ const Dashboard = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
 	const navigate = useNavigate();
-	const { showToast, toastMessage, toastType, setToast, forModal } = useToast();
+	const { showToast, toastMessage, toastType, forModal } = useToast();
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [weeklyTransactions, setWeeklyTransactions] = useState<Transaction[]>([]);
 	const [threeRecentTransactions, setThreeRecentTransactions] = useState<Transaction[]>([]);

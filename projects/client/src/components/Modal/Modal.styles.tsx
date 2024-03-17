@@ -7,7 +7,7 @@ export const MainContainer = styled.div`
 	justify-content: center;
 
 	position: fixed;
-	z-index: 666;
+	z-index: 5;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -33,15 +33,6 @@ export const ModalContent = styled.div`
 		height: 200px;
 		border-radius: 50%;
 		margin-bottom: 50px;
-	}
-
-	svg {
-		cursor: pointer;
-		position: fixed;
-		top: 315px;
-		left: 1010px;
-		width: 50px;
-		height: 50px;
 	}
 `;
 

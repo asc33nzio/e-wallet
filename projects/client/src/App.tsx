@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "./redux/userSlice";
 import { decodeJWT } from "./utils/DecodeJWT";
+import { useModal } from "./components/Modal/ModalContext";
 
 const App = (): null => {
 	const dispatch = useDispatch();
+	const { closeModal } = useModal();
 	//! Token storing logic to be changed later (rehydrate store)
 	const reduxUserAuthToken = useSelector((state: any) => state?.token?.value);
 	const userAuthToken = localStorage.getItem("token");
@@ -31,7 +33,7 @@ const App = (): null => {
 
 	useEffect(() => {
 		keepLogin();
-	}, [dispatch, userAuthToken, reduxUserAuthToken]);
+	}, [dispatch, userAuthToken, reduxUserAuthToken, closeModal]);
 
 	return null;
 };
