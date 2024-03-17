@@ -89,7 +89,7 @@ const Sidebar = (props: { minimized: boolean; onClick: any; resolution?: string 
 					</StyledElements>
 
 					<StyledElements>
-						<StyledButton $minimized={props.minimized.toString()}>
+						<StyledButton onClick={() => openModal("topup")} $minimized={props.minimized.toString()}>
 							<TopUpICO />
 							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Top Up"}

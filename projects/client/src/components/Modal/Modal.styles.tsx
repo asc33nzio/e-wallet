@@ -67,6 +67,14 @@ export const ModalContent = styled.div`
 		fill: #f60707;
 		cursor: pointer;
 	}
+
+	.closeIconTopUp {
+		margin-right: -25px;
+		margin-top: -20px;
+		align-self: flex-end;
+		fill: #f60707;
+		cursor: pointer;
+	}
 `;
 
 export const EditInputGroupContainer = styled.div`
@@ -127,8 +135,8 @@ export const LeftElement = styled.div<{ $hasError?: boolean }>`
 	font-weight: 300;
 	border: ${({ $hasError }) => ($hasError ? "2px solid #F60707" : "none")};
 	margin-left: -1px;
-	border-top-left-radius: 10px;
-	border-bottom-left-radius: 10px;
+	border-top-left-radius: 12px;
+	border-bottom-left-radius: 12px;
 `;
 
 export const EditInput = styled.input<{ $hasError: boolean; $isMoney?: boolean }>`
@@ -172,7 +180,7 @@ export const EditButtonGroupContainer = styled.div`
 
 export const EditButton = styled.button<{ $type: string; $isPrelim?: boolean; $isMoney?: boolean }>`
 	width: 100%;
-	height: ${({ $isMoney }) => ($isMoney ? "100px" : "inherit")};
+	height: ${({ $isMoney, $isPrelim }) => ($isMoney ? "90px" : $isPrelim ? "75px" : "inherit")};
 
 	margin-top: ${({ $isMoney }) => ($isMoney ? "75px" : "0")};
 	margin-bottom: ${({ $isMoney }) => ($isMoney ? "50px" : "0")};
@@ -191,7 +199,7 @@ export const EditButton = styled.button<{ $type: string; $isPrelim?: boolean; $i
 	}
 `;
 
-export const ErrorDiv = styled.div<{ $hasError: boolean }>`
+export const ErrorDiv = styled.div<{ $hasError: boolean; $isForTopUp?: boolean }>`
 	display: ${({ $hasError }) => ($hasError ? "flex" : "none")};
 	align-items: center;
 
@@ -201,6 +209,8 @@ export const ErrorDiv = styled.div<{ $hasError: boolean }>`
 	padding-left: 15px;
 	font-size: 16px;
 	color: #f60707;
+
+	font-size: ${({ $isForTopUp }) => ($isForTopUp ? "12px" : "inherit")};
 `;
 
 export const BalanceDiv = styled.div`
@@ -250,5 +260,57 @@ export const ModalContentProfilePrelim = styled.div`
 			margin-bottom: 25px;
 			color: #95999e;
 		}
+	}
+`;
+
+//! Custom Select
+
+export const CustomSelect = styled.div`
+	display: flex;
+	align-items: center;
+	position: relative;
+
+	width: 100%;
+	height: 75px;
+
+	text-align: left;
+	font-size: 18px;
+	padding-left: 25px;
+	border-radius: 12px;
+	background-color: #f0efff;
+	color: #a7a3ff;
+	cursor: pointer;
+`;
+
+export const OptionList = styled.div<{ $isOpen: boolean }>`
+	position: absolute;
+	display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
+	top: calc(100% + 5px);
+	left: -1px;
+
+	width: 100%;
+	background-color: #f0efff;
+	border-radius: 12px;
+	box-shadow: 0px 6px 3px rgba(0, 0, 0, 0.35);
+`;
+
+export const Option = styled.div`
+	cursor: pointer;
+	padding: 25px;
+	color: #a7a3ff;
+
+	&:hover {
+		color: white;
+		background-color: #4d47c3;
+	}
+
+	&:nth-child(1) {
+		border-top-right-radius: 12px;
+		border-top-left-radius: 12px;
+	}
+
+	&:nth-last-child(1) {
+		border-bottom-right-radius: 12px;
+		border-bottom-left-radius: 12px;
 	}
 `;

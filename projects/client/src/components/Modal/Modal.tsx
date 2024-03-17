@@ -5,6 +5,7 @@ import FileInput, { SuccessICO } from "./ModalIcons";
 import { useModal } from "./ModalContext";
 import {
 	BalanceDiv,
+	CustomSelect,
 	EditButton,
 	EditButtonGroupContainer,
 	EditInput,
@@ -15,11 +16,14 @@ import {
 	MainContainer,
 	ModalContent,
 	ModalContentProfilePrelim,
+	Option,
+	OptionList,
 } from "./Modal.styles";
 import { useSelector } from "react-redux";
 import { useToast } from "../Toast/ToastContext";
 import { MdClose } from "react-icons/md";
 import { formatDate } from "../../utils/FormatDate";
+import { TopUpType } from "../../types/Modal";
 
 const Modal = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
@@ -31,6 +35,7 @@ const Modal = (): React.ReactElement => {
 	const [nameValidationError, setNameValidationError] = useState<string>("");
 	const [amountValidationError, setAmountValidationError] = useState<string>("");
 	const [destinationValidationError, setDestinationValidationError] = useState<string>("");
+	const [topUpAmountValidationError, settopUpAmountValidationError] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [displayName, setDisplayName] = useState<string>("");
 	const [destination, setDestination] = useState<number>(0);
@@ -41,6 +46,9 @@ const Modal = (): React.ReactElement => {
 	);
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 	const [avatar, setAvatar] = useState<File | null>(null);
+	const [topUpAmount, setTopUpAmount] = useState<number>(0);
+	const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
+	const [selectedTopUpSource, setSelectedTopUpSource] = useState<TopUpType>({ type: "" });
 
 	const handleEmailValidation = (input: string) => {
 		const sanitizedInput = input.trim();
@@ -98,6 +106,25 @@ const Modal = (): React.ReactElement => {
 		}
 
 		setAmount(input);
+	};
+
+	const handleTopUpAmountValidation = (input: number) => {
+		if (isNaN(input)) {
+			settopUpAmountValidationError("Amount can only be numbers");
+			return;
+		} else if (input < 50000 || input > 10000000) {
+			settopUpAmountValidationError("Top Up Value must be between IDR 50,000 - IDR 10,000,000");
+			return;
+		} else {
+			settopUpAmountValidationError("");
+		}
+
+		setTopUpAmount(input);
+	};
+
+	const handleTopUpSourceOptionSelect = (option: TopUpType) => {
+		setSelectedTopUpSource(option);
+		setIsSelectOpen(false);
 	};
 
 	const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,8 +220,41 @@ const Modal = (): React.ReactElement => {
 			openModal("transfer-success");
 			setIsLoading(false);
 		} catch (error: any) {
-			console.log(error);
+			const errorMessage = error?.response?.data?.message;
+			setToast(true, errorMessage, "error", true);
+			setIsLoading(false);
+		}
+	};
 
+	const handleTopUpSubmit = async () => {
+		const payload = {
+			amount: topUpAmount,
+			sourceOfFunds: selectedTopUpSource.type,
+		};
+
+		if (topUpAmountValidationError !== "") {
+			return;
+		}
+		if (selectedTopUpSource.type === "") {
+			setToast(true, "Please choose a source of funds", "error", true);
+			return;
+		}
+		if (topUpAmount === 0) {
+			setToast(true, "Please enter an amount to top up", "error", true);
+			return;
+		}
+
+		try {
+			setIsLoading(true);
+			await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData?.id}/topup`, payload, {
+				headers: {
+					Authorization: `Bearer ${userAuthToken}`,
+				},
+			});
+
+			openModal("topup-success");
+			setIsLoading(false);
+		} catch (error: any) {
 			const errorMessage = error?.response?.data?.message;
 			setToast(true, errorMessage, "error", true);
 			setIsLoading(false);
@@ -207,6 +267,9 @@ const Modal = (): React.ReactElement => {
 		setNameValidationError("");
 		setEmailValidationError("");
 		setAmountValidationError("");
+		settopUpAmountValidationError("");
+		setSelectedTopUpSource({ type: "" });
+		setIsSelectOpen(false);
 		closeModal();
 	};
 
@@ -340,6 +403,66 @@ const Modal = (): React.ReactElement => {
 						<SuccessICO />
 						<span className="heading transfer">Transfer Success</span>
 						<span className="amount">IDR {amount?.toLocaleString("en-US")}</span>
+						<span className="date">{formatDate(Date.now())}</span>
+						<EditButton $type="save" onClick={handleClose} $isMoney={true}>
+							Close
+						</EditButton>
+					</ModalContent>
+				</MainContainer>
+			)}
+			{showModal && modalType === "topup" && (
+				<MainContainer id="main-modal-container">
+					<ModalContent>
+						<MdClose size={35} className="closeIconTopUp" onClick={handleClose} />
+						<span className="heading">Top Up</span>
+
+						<CustomSelect onClick={() => setIsSelectOpen(!isSelectOpen)}>
+							{selectedTopUpSource.type === ""
+								? "Choose source of funds"
+								: selectedTopUpSource.type === "cash"
+								? "Cash"
+								: selectedTopUpSource.type === "transfer"
+								? "Bank Transfer"
+								: "Credit Card"}
+							<OptionList $isOpen={isSelectOpen}>
+								<Option onClick={() => handleTopUpSourceOptionSelect({ type: "cash" })}>Cash</Option>
+								<Option onClick={() => handleTopUpSourceOptionSelect({ type: "transfer" })}>
+									Bank Transfer
+								</Option>
+								<Option onClick={() => handleTopUpSourceOptionSelect({ type: "cc" })}>
+									Credit Card
+								</Option>
+							</OptionList>
+						</CustomSelect>
+
+						<EditInputGroupContainer>
+							<EditInputContainer $hasError={topUpAmountValidationError !== ""} $isPadded={true}>
+								<LeftElement $hasError={topUpAmountValidationError !== ""}>IDR</LeftElement>
+								<EditInput
+									type="number"
+									$hasError={topUpAmountValidationError !== ""}
+									placeholder={"enter amount here"}
+									$isMoney={true}
+									onChange={(event) => handleTopUpAmountValidation(parseInt(event.target.value, 10))}
+								/>
+							</EditInputContainer>
+							<ErrorDiv $hasError={topUpAmountValidationError !== ""} $isForTopUp={true}>
+								{topUpAmountValidationError}
+							</ErrorDiv>
+						</EditInputGroupContainer>
+
+						<EditButton $type="save" $isMoney={true} onClick={handleTopUpSubmit}>
+							Submit
+						</EditButton>
+					</ModalContent>
+				</MainContainer>
+			)}
+			{showModal && modalType === "topup-success" && (
+				<MainContainer id="main-modal-container">
+					<ModalContent>
+						<SuccessICO />
+						<span className="heading transfer">Top Up Success</span>
+						<span className="amount">IDR {topUpAmount?.toLocaleString("en-US")}</span>
 						<span className="date">{formatDate(Date.now())}</span>
 						<EditButton $type="save" onClick={handleClose} $isMoney={true}>
 							Close
