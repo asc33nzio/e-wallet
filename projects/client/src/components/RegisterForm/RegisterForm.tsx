@@ -84,10 +84,6 @@ const Register = ({ onToastChange }: RegisterFormProps): React.ReactElement => {
 			onToastChange(true, errorMessage !== undefined ? errorMessage : "Login Failed", "error");
 		}
 
-		setTimeout(() => {
-			onToastChange(false, "", "");
-		}, 5000);
-
 		setSubmitting(false);
 	};
 

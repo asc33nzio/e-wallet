@@ -26,7 +26,7 @@ const Dashboard = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
 	const navigate = useNavigate();
-	const { showToast, toastMessage, toastType, setToast } = useToast();
+	const { showToast, toastMessage, toastType, setToast, forModal } = useToast();
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [weeklyTransactions, setWeeklyTransactions] = useState<Transaction[]>([]);
 	const [threeRecentTransactions, setThreeRecentTransactions] = useState<Transaction[]>([]);
@@ -37,11 +37,14 @@ const Dashboard = (): React.ReactElement => {
 
 	const fetchTransactions = async () => {
 		try {
-			const response = await Axios.get(`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData.id}/transactions?limit=1000&sortOrder=DESC`, {
-				headers: {
-					Authorization: `Bearer ${userAuthToken}`,
+			const response = await Axios.get(
+				`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData.id}/transactions?limit=1000&sortOrder=DESC`,
+				{
+					headers: {
+						Authorization: `Bearer ${userAuthToken}`,
+					},
 				},
-			});
+			);
 
 			const txData = response?.data?.data?.transactionHistory;
 			setTransactions(txData);
@@ -149,13 +152,9 @@ const Dashboard = (): React.ReactElement => {
 		}
 	}, [isDesktopDisplay]);
 
-	setTimeout(() => {
-		setToast(false, "", "");
-	}, 5000);
-
 	return isDesktopDisplay ? (
 		<StyledDashboardMainContainer>
-			{showToast ? (
+			{showToast && !forModal ? (
 				<Toast message={toastMessage} type={toastType} orientation="right" resolution="desktop" />
 			) : null}
 			<Sidebar minimized={minimized} onClick={handleMinimize} />
@@ -202,7 +201,7 @@ const Dashboard = (): React.ReactElement => {
 		</StyledDashboardMainContainer>
 	) : (
 		<StyledDashboardMainContainer>
-			{showToast ? <Toast message={toastMessage} type={toastType} resolution="mobile" /> : null}
+			{showToast && !forModal ? <Toast message={toastMessage} type={toastType} resolution="mobile" /> : null}
 			<Sidebar minimized={minimized} onClick={handleMinimize} resolution="mobile" />
 
 			<StyledDashboardContentContainer resolution="mobile">

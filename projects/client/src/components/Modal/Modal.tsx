@@ -1,44 +1,167 @@
-import axios from "axios";
+import Axios from "axios";
+import Toast from "../Toast/Toast";
 import React, { useEffect, useState } from "react";
 import { useModal } from "./ModalContext";
-import { EditInput, EditInputContainer, MainContainer, ModalContent } from "./Modal.styles";
+import {
+	EditButton,
+	EditButtonGroupContainer,
+	EditInput,
+	EditInputContainer,
+	EditInputGroupContainer,
+	ErrorDiv,
+	MainContainer,
+	ModalContent,
+} from "./Modal.styles";
 import { useSelector } from "react-redux";
 import { EditICO } from "./ModalIcons";
+import { useToast } from "../Toast/ToastContext";
 
 const Modal = (): React.ReactElement => {
+	const userAuthToken = localStorage.getItem("token");
 	const userData = useSelector((state: any) => state?.user?.value);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { showModal, modalType, openModal, closeModal } = useModal();
-	const [avatar, setAvatar] = useState(
+	const { showToast, toastMessage, toastType, setToast, forModal } = useToast();
+	const [emailValidationError, setEmailValidationError] = useState<string>("");
+	const [nameValidationError, setNameValidationError] = useState<string>("");
+	const [email, setEmail] = useState<string>("");
+	const [displayName, setDisplayName] = useState<string>("");
+	const [currentAvatar, setCurrentAvatar] = useState(
 		`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
 	);
+	const [avatar, setAvatar] = useState<File | null>(null);
+
+	const handleEmailValidation = (input: string) => {
+		const sanitizedInput = input.trim();
+		if (sanitizedInput === "") {
+			setEmailValidationError("");
+			setEmail(sanitizedInput);
+		} else if (!/^[\w-.]+(\+[\w-]+)?@([\w-]+\.)+[\w-]{2,4}$/.test(sanitizedInput)) {
+			setEmailValidationError("Invalid email format");
+			return;
+		} else {
+			setEmailValidationError("");
+		}
+
+		setEmail(sanitizedInput);
+	};
+
+	const handleNameValidation = (input: string) => {
+		const sanitizedInput = input.trim();
+		if (sanitizedInput.length > 0 && sanitizedInput.length < 3) {
+			setNameValidationError("Name needs to be at least 3 characters long");
+			return;
+		} else if (sanitizedInput === "") {
+			setNameValidationError("");
+			setDisplayName("");
+		} else {
+			setNameValidationError("");
+		}
+
+		setDisplayName(sanitizedInput);
+	};
+
+	const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) {
+			setAvatar(file);
+		}
+	};
+
+	const handleSubmit = async () => {
+		const payload = new FormData();
+
+		if (emailValidationError !== "") {
+			return;
+		} else if (email !== "") {
+			payload.append("email", email);
+		} else {
+			payload.append("email", userData?.email);
+		}
+
+		if (nameValidationError !== "") {
+			return;
+		} else if (displayName !== "") {
+			payload.append("displayName", displayName);
+		} else {
+			payload.append("displayName", userData?.displayName);
+		}
+
+		if (avatar) {
+			payload.append("avatar", avatar);
+		}
+
+		try {
+			setIsLoading(true);
+			const response = await Axios.patch(`${process.env.REACT_APP_API_BASE_URL}/users/${userData?.id}`, payload, {
+				headers: {
+					Authorization: `Bearer ${userAuthToken}`,
+					"Content-Type": "multipart/form-data",
+				},
+			});
+
+			setIsLoading(false);
+			setToast(true, "Profile Updated", "ok", true);
+			closeModal();
+		} catch (error: any) {
+			const errorMessage = error?.response?.data?.message;
+			setToast(true, errorMessage, "error", true);
+			setIsLoading(false);
+		}
+	};
 
 	useEffect(() => {
-		setAvatar(
+		setCurrentAvatar(
 			`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
 		);
-	}, [userData]);
+	}, [userData, isLoading]);
 
 	return (
 		<>
+			{showToast && forModal && <Toast message={toastMessage} type={toastType} resolution={"desktop"} />}
 			{showModal && (
 				<MainContainer id="main-modal-container">
 					<ModalContent>
-						<img alt="avatar" src={avatar} />
+						<img alt="avatar" src={currentAvatar} />
 						<EditICO />
+						<input type="file" onChange={handleAvatarChange} />
 
-						<div>
+						<EditInputGroupContainer>
 							<span>Email</span>
-							<EditInputContainer $hasError={false}>
-								<EditInput $hasError={false} placeholder={userData?.email} />
+							<EditInputContainer $hasError={emailValidationError !== ""}>
+								<EditInput
+									$hasError={emailValidationError !== ""}
+									placeholder={userData?.email}
+									onChange={(event) => handleEmailValidation(event.target.value)}
+								/>
 							</EditInputContainer>
-						</div>
+							<ErrorDiv $hasError={emailValidationError !== ""}>{emailValidationError}</ErrorDiv>
+						</EditInputGroupContainer>
 
-						<div>
+						<EditInputGroupContainer>
 							<span>Full Name</span>
-							<EditInputContainer $hasError={false}>
-								<EditInput $hasError={false} placeholder={userData?.displayName} />
+							<EditInputContainer $hasError={nameValidationError !== ""}>
+								<EditInput
+									$hasError={nameValidationError !== ""}
+									placeholder={userData?.displayName}
+									onChange={(event) => handleNameValidation(event.target.value)}
+								/>
 							</EditInputContainer>
-						</div>
+							<ErrorDiv $hasError={nameValidationError !== ""}>{nameValidationError}</ErrorDiv>
+						</EditInputGroupContainer>
+
+						<EditButtonGroupContainer>
+							<EditButton
+								$type="save"
+								disabled={emailValidationError !== "" || nameValidationError !== ""}
+								onClick={handleSubmit}
+							>
+								Save
+							</EditButton>
+							<EditButton $type="cancel" onClick={closeModal}>
+								Cancel
+							</EditButton>
+						</EditButtonGroupContainer>
 					</ModalContent>
 				</MainContainer>
 			)}

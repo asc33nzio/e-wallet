@@ -34,6 +34,11 @@ const MiniNavbar = (props: { heading: string; resolution?: string }): React.Reac
 		setExpandMenu(!expandMenu);
 	};
 
+	const handleProfileClick = () => {
+		openModal("profile");
+		setExpandMenu(false);
+	};
+
 	useEffect(() => {
 		setAvatar(
 			`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
@@ -47,7 +52,7 @@ const MiniNavbar = (props: { heading: string; resolution?: string }): React.Reac
 
 			{expandMenu && (
 				<StyledProfileMenu resolution={props?.resolution}>
-					<StyledProfileMenuElement onClick={() => openModal("profile")}>
+					<StyledProfileMenuElement onClick={handleProfileClick}>
 						<ProfileICO />
 						<button>Profile</button>
 					</StyledProfileMenuElement>
