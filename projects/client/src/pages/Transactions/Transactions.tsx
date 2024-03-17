@@ -47,6 +47,7 @@ const Transactions = (): React.ReactElement => {
 	const handleTypeSelectOption = (option: TxType) => {
 		setSelectedTypeOption(option);
 		setIsTypeSelectOpen(false);
+		setCurrentPage(1);
 
 		if (option.type === "all") {
 			setSearchQuery("");
@@ -62,6 +63,7 @@ const Transactions = (): React.ReactElement => {
 	const handleSortSelectOption = (option: TxSortType) => {
 		setSelectedSortOption(option);
 		setIsSortSelectOpen(false);
+		setCurrentPage(1);
 
 		if (option.sort === "amountAsc") {
 			setSortBy("amount");

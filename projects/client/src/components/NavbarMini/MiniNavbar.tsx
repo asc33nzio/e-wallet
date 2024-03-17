@@ -35,7 +35,7 @@ const MiniNavbar = (props: { heading: string; resolution?: string }): React.Reac
 	};
 
 	const handleProfileClick = () => {
-		openModal("profile");
+		openModal("profilePrelim");
 		setExpandMenu(false);
 	};
 

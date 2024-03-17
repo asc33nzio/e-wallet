@@ -34,6 +34,39 @@ export const ModalContent = styled.div`
 		border-radius: 50%;
 		margin-bottom: 50px;
 	}
+
+	.heading {
+		width: 100%;
+		font-size: 42px;
+		font-weight: 550;
+		color: #4d47c3;
+		margin-bottom: 50px;
+	}
+
+	.transfer {
+		text-align: center;
+		margin-top: 25px;
+	}
+
+	.amount {
+		font-size: 32px;
+		font-weight: 550;
+		margin-bottom: 15px;
+	}
+
+	.date {
+		font-size: 20px;
+		font-weight: 500;
+		color: #95999e;
+	}
+
+	.closeIcon {
+		margin-right: -55px;
+		margin-top: -35px;
+		align-self: flex-end;
+		fill: #f60707;
+		cursor: pointer;
+	}
 `;
 
 export const EditInputGroupContainer = styled.div`
@@ -48,7 +81,7 @@ export const EditInputGroupContainer = styled.div`
 	margin-bottom: 25px;
 `;
 
-export const EditInputContainer = styled.div<{ $hasError?: boolean }>`
+export const EditInputContainer = styled.div<{ $hasError?: boolean; $isPadded?: boolean }>`
 	background-color: ${({ $hasError }) => ($hasError ? "#FEEFE7" : "#F0EFFF")};
 	display: flex;
 	flex-direction: row;
@@ -57,7 +90,7 @@ export const EditInputContainer = styled.div<{ $hasError?: boolean }>`
 
 	width: 100%;
 	height: 60px;
-	padding: 10px;
+	padding: ${({ $isPadded }) => ($isPadded ? "0" : "10px")};
 	border-radius: 10px;
 	border: ${({ $hasError }) => ($hasError ? "2px solid #F60707" : "none")};
 
@@ -81,7 +114,24 @@ export const EditInputContainer = styled.div<{ $hasError?: boolean }>`
 	}
 `;
 
-export const EditInput = styled.input<{ $hasError: boolean }>`
+export const LeftElement = styled.div<{ $hasError?: boolean }>`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100px;
+	height: inherit;
+
+	background-color: #4d47c3;
+	color: white;
+	font-weight: 300;
+	border: ${({ $hasError }) => ($hasError ? "2px solid #F60707" : "none")};
+	margin-left: -1px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+`;
+
+export const EditInput = styled.input<{ $hasError: boolean; $isMoney?: boolean }>`
 	width: 100%;
 	background-color: transparent;
 	color: ${({ $hasError }) => ($hasError ? "#F60707" : "black")};
@@ -96,7 +146,13 @@ export const EditInput = styled.input<{ $hasError: boolean }>`
 
 	&::placeholder {
 		color: ${({ $hasError }) => ($hasError ? "#F60707" : "#A7A3FF")};
-		font-size: 24px;
+		font-size: ${({ $isMoney }) => ($isMoney ? "18px" : "24px")};
+	}
+
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
 	}
 `;
 
@@ -114,10 +170,12 @@ export const EditButtonGroupContainer = styled.div`
 	font-weight: 550;
 `;
 
-export const EditButton = styled.button<{ $type: string }>`
-	width: 50%;
-	height: inherit;
+export const EditButton = styled.button<{ $type: string; $isPrelim?: boolean; $isMoney?: boolean }>`
+	width: 100%;
+	height: ${({ $isMoney }) => ($isMoney ? "100px" : "inherit")};
 
+	margin-top: ${({ $isMoney }) => ($isMoney ? "75px" : "0")};
+	margin-bottom: ${({ $isMoney }) => ($isMoney ? "50px" : "0")};
 	border: ${({ $type }) => ($type === "save" ? "none" : "2px solid #4D47C3")};
 	border-radius: 12px;
 
@@ -134,7 +192,7 @@ export const EditButton = styled.button<{ $type: string }>`
 `;
 
 export const ErrorDiv = styled.div<{ $hasError: boolean }>`
-	display: flex;
+	display: ${({ $hasError }) => ($hasError ? "flex" : "none")};
 	align-items: center;
 
 	width: 100%;
@@ -142,5 +200,55 @@ export const ErrorDiv = styled.div<{ $hasError: boolean }>`
 
 	padding-left: 15px;
 	font-size: 16px;
-	color: #F60707;
+	color: #f60707;
+`;
+
+export const BalanceDiv = styled.div`
+	display: flex;
+	align-items: center;
+
+	width: 100%;
+	height: 50px;
+
+	padding-left: 15px;
+	font-size: 14px;
+	font-weight: 400;
+	color: #95999e;
+
+	margin-top: -15px;
+	margin-bottom: 10px;
+`;
+
+export const ModalContentProfilePrelim = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	width: 500px;
+	height: 500px;
+	background-color: white;
+
+	padding: 50px;
+	border-radius: 10px;
+
+	img {
+		object-fit: cover;
+		width: 200px;
+		height: 200px;
+		border-radius: 50%;
+		margin-bottom: 25px;
+	}
+
+	span {
+		&.displayName {
+			font-size: 32px;
+			font-weight: 550;
+		}
+
+		&.email {
+			font-size: 16px;
+			margin-bottom: 25px;
+			color: #95999e;
+		}
+	}
 `;

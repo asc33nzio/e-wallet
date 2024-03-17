@@ -1,20 +1,25 @@
 import Axios from "axios";
 import Toast from "../Toast/Toast";
 import React, { useEffect, useState } from "react";
-import FileInput from "./ModalIcons";
+import FileInput, { SuccessICO } from "./ModalIcons";
 import { useModal } from "./ModalContext";
 import {
+	BalanceDiv,
 	EditButton,
 	EditButtonGroupContainer,
 	EditInput,
 	EditInputContainer,
 	EditInputGroupContainer,
 	ErrorDiv,
+	LeftElement,
 	MainContainer,
 	ModalContent,
+	ModalContentProfilePrelim,
 } from "./Modal.styles";
 import { useSelector } from "react-redux";
 import { useToast } from "../Toast/ToastContext";
+import { MdClose } from "react-icons/md";
+import { formatDate } from "../../utils/FormatDate";
 
 const Modal = (): React.ReactElement => {
 	const userAuthToken = localStorage.getItem("token");
@@ -24,8 +29,13 @@ const Modal = (): React.ReactElement => {
 	const { showToast, toastMessage, toastType, setToast, forModal } = useToast();
 	const [emailValidationError, setEmailValidationError] = useState<string>("");
 	const [nameValidationError, setNameValidationError] = useState<string>("");
+	const [amountValidationError, setAmountValidationError] = useState<string>("");
+	const [destinationValidationError, setDestinationValidationError] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [displayName, setDisplayName] = useState<string>("");
+	const [destination, setDestination] = useState<number>(0);
+	const [amount, setAmount] = useState<number>(0);
+	const [description, setDescription] = useState<string>("");
 	const [currentAvatar, setCurrentAvatar] = useState(
 		`${process.env.REACT_APP_API_BASE_URL}/avatars/${userData?.avatar ? userData?.avatar : "default_ava.png"}`,
 	);
@@ -62,6 +72,34 @@ const Modal = (): React.ReactElement => {
 		setDisplayName(sanitizedInput);
 	};
 
+	const handleDestinationValidation = (input: number) => {
+		if (isNaN(input)) {
+			setDestinationValidationError("Destination can only be numbers");
+			return;
+		} else if (input?.toString().length !== 13) {
+			setDestinationValidationError("Account numbers are strictly 13 digits long");
+			return;
+		} else {
+			setDestinationValidationError("");
+		}
+
+		setDestination(input);
+	};
+
+	const handleAmountValidation = (input: number) => {
+		if (isNaN(input)) {
+			setAmountValidationError("Amount can only be numbers");
+			return;
+		} else if (input > userData?.wallet?.balance) {
+			setAmountValidationError("Balance is not enough");
+			return;
+		} else {
+			setAmountValidationError("");
+		}
+
+		setAmount(input);
+	};
+
 	const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
@@ -74,7 +112,7 @@ const Modal = (): React.ReactElement => {
 		}
 	};
 
-	const handleSubmit = async () => {
+	const handleUpdateProfileSubmit = async () => {
 		const payload = new FormData();
 
 		if (emailValidationError !== "") {
@@ -120,9 +158,55 @@ const Modal = (): React.ReactElement => {
 		}
 	};
 
+	const handleTransferSubmit = async () => {
+		interface TransferPayload {
+			accountNumber: string;
+			amount: number;
+			description?: string | null;
+		}
+
+		const payload: TransferPayload = {
+			accountNumber: destination.toString(),
+			amount: amount,
+		};
+
+		if (destinationValidationError !== "") {
+			return;
+		}
+		if (amountValidationError !== "") {
+			return;
+		}
+		if (description.trim() === "") {
+			payload.description = null;
+		} else if (description.trim() !== "") {
+			payload.description = description.trim();
+		}
+
+		try {
+			setIsLoading(true);
+			await Axios.post(`${process.env.REACT_APP_API_BASE_URL}/wallet/${userData?.id}/transfer`, payload, {
+				headers: {
+					Authorization: `Bearer ${userAuthToken}`,
+				},
+			});
+
+			openModal("transfer-success");
+			setIsLoading(false);
+		} catch (error: any) {
+			console.log(error);
+
+			const errorMessage = error?.response?.data?.message;
+			setToast(true, errorMessage, "error", true);
+			setIsLoading(false);
+		}
+	};
+
 	const handleClose = () => {
 		setAvatar(null);
 		setAvatarPreview(null);
+		setNameValidationError("");
+		setEmailValidationError("");
+		setAmountValidationError("");
 		closeModal();
 	};
 
@@ -139,7 +223,19 @@ const Modal = (): React.ReactElement => {
 	return (
 		<>
 			{showToast && forModal && <Toast message={toastMessage} type={toastType} resolution={"desktop"} />}
-			{showModal && (
+			{showModal && modalType === "profilePrelim" && (
+				<MainContainer id="main-modal-container">
+					<ModalContentProfilePrelim>
+						<img alt="avatar" src={currentAvatar} />
+						<span className="displayName">{userData?.displayName}</span>
+						<span className="email">{userData?.email}</span>
+						<EditButton $type="save" $isPrelim={true} onClick={() => openModal("profile")}>
+							Edit Profile
+						</EditButton>
+					</ModalContentProfilePrelim>
+				</MainContainer>
+			)}
+			{showModal && modalType === "profile" && (
 				<MainContainer id="main-modal-container">
 					<ModalContent>
 						<img alt="avatar" src={avatarPreview || currentAvatar} />
@@ -173,7 +269,7 @@ const Modal = (): React.ReactElement => {
 							<EditButton
 								$type="save"
 								disabled={emailValidationError !== "" || nameValidationError !== ""}
-								onClick={handleSubmit}
+								onClick={handleUpdateProfileSubmit}
 							>
 								Save
 							</EditButton>
@@ -181,6 +277,73 @@ const Modal = (): React.ReactElement => {
 								Cancel
 							</EditButton>
 						</EditButtonGroupContainer>
+					</ModalContent>
+				</MainContainer>
+			)}
+			{showModal && modalType === "transfer" && (
+				<MainContainer id="main-modal-container">
+					<ModalContent>
+						<MdClose size={75} className="closeIcon" onClick={handleClose} />
+						<span className="heading">Transfer</span>
+						<EditInputGroupContainer>
+							<EditInputContainer $hasError={destinationValidationError !== ""}>
+								<EditInput
+									type="number"
+									$hasError={false}
+									placeholder={"enter destination account number"}
+									$isMoney={true}
+									onChange={(event) => handleDestinationValidation(parseInt(event.target.value, 10))}
+								/>
+							</EditInputContainer>
+							<ErrorDiv $hasError={destinationValidationError !== ""}>
+								{destinationValidationError}
+							</ErrorDiv>
+						</EditInputGroupContainer>
+
+						<EditInputGroupContainer>
+							<EditInputContainer $hasError={amountValidationError !== ""} $isPadded={true}>
+								<LeftElement $hasError={amountValidationError !== ""}>IDR</LeftElement>
+								<EditInput
+									type="number"
+									$hasError={amountValidationError !== ""}
+									placeholder={"enter amount here"}
+									$isMoney={true}
+									onChange={(event) => handleAmountValidation(parseInt(event.target.value, 10))}
+								/>
+							</EditInputContainer>
+							<ErrorDiv $hasError={amountValidationError !== ""}>{amountValidationError}</ErrorDiv>
+						</EditInputGroupContainer>
+
+						<BalanceDiv>
+							Remaining Balance: IDR {userData?.wallet?.balance?.toLocaleString("en-US")}
+						</BalanceDiv>
+
+						<EditInputGroupContainer>
+							<EditInputContainer $hasError={false}>
+								<EditInput
+									$hasError={false}
+									placeholder={"enter description"}
+									$isMoney={true}
+									onChange={(event) => setDescription(event.target.value)}
+								/>
+							</EditInputContainer>
+						</EditInputGroupContainer>
+						<EditButton $type="save" $isMoney={true} onClick={handleTransferSubmit}>
+							Submit
+						</EditButton>
+					</ModalContent>
+				</MainContainer>
+			)}
+			{showModal && modalType === "transfer-success" && (
+				<MainContainer id="main-modal-container">
+					<ModalContent>
+						<SuccessICO />
+						<span className="heading transfer">Transfer Success</span>
+						<span className="amount">IDR {amount?.toLocaleString("en-US")}</span>
+						<span className="date">{formatDate(Date.now())}</span>
+						<EditButton $type="save" onClick={handleClose} $isMoney={true}>
+							Close
+						</EditButton>
 					</ModalContent>
 				</MainContainer>
 			)}

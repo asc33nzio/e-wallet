@@ -220,7 +220,7 @@ export const StyledNavigationContainer = styled.div`
 	margin-top: 10px;
 `;
 
-export const StyledNavigationButton = styled.button<{$limit?: boolean}>`
+export const StyledNavigationButton = styled.button<{ $limit?: boolean }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -234,7 +234,7 @@ export const StyledNavigationButton = styled.button<{$limit?: boolean}>`
 	border-radius: 5px;
 	outline: none;
 	border: none;
-	background-color: ${({ $limit }) => ($limit ? "black" : "#ede6e7")};
+	background-color: ${({ $limit }) => ($limit ? "#999798" : "#ede6e7")};
 
 	cursor: ${({ $limit }) => (!$limit && $limit !== undefined ? "pointer" : "not-allowed")};
 `;

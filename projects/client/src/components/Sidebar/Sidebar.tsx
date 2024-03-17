@@ -16,11 +16,13 @@ import { useDispatch } from "react-redux";
 import { setUserData } from "../../redux/userSlice";
 import { setToken } from "../../redux/tokenSlice";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useModal } from "../Modal/ModalContext";
 
 const Sidebar = (props: { minimized: boolean; onClick: any; resolution?: string }): React.ReactElement => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const currentPage = useLocation();
+	const { openModal } = useModal();
 	const path = currentPage.pathname.split("/");
 	const currentDirectory = path[path.length - 1];
 
@@ -78,30 +80,30 @@ const Sidebar = (props: { minimized: boolean; onClick: any; resolution?: string 
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/" $minimized={props.minimized.toString()}>
+						<StyledButton onClick={() => openModal("transfer")} $minimized={props.minimized.toString()}>
 							<TransferICO />
 							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Transfer"}
 							</StyledParagraph>
-						</StyledLink>
+						</StyledButton>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/" $minimized={props.minimized.toString()}>
+						<StyledButton $minimized={props.minimized.toString()}>
 							<TopUpICO />
 							<StyledParagraph $minimized={props.minimized.toString()}>
 								{!props.minimized && "Top Up"}
 							</StyledParagraph>
-						</StyledLink>
+						</StyledButton>
 					</StyledElements>
 
 					<StyledElements>
-						<StyledLink to="/" $minimized={props.minimized.toString()}>
+						<StyledButton $minimized={props.minimized.toString()}>
 							<GiPerspectiveDiceSixFacesRandom size={28} fill="#95999E" className="rewardSidebarIcon" />
 							<StyledParagraph $minimized={props.minimized.toString()} className="rewardSidebarText">
 								{!props.minimized && "Rewards"}
 							</StyledParagraph>
-						</StyledLink>
+						</StyledButton>
 					</StyledElements>
 
 					<StyledElements>
